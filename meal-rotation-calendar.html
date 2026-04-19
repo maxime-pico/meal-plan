@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-Day Meal Rotation Calendar</title>
+    <script src="data.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f1e8 0%, #e8ded0 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2d5016;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        /* Main Rotation Section */
+        .rotation-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .rotation-title {
+            font-size: 1.3em;
+            color: #2d5016;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4a574;
+        }
+
+        .shopping-trips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .shopping-trip {
+            background: linear-gradient(135deg, #faf5ef 0%, #f0ebe3 100%);
+            border-left: 4px solid #d4a574;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .trip-label {
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .recipe-card {
+            background: white;
+            border: 2px solid #e0d4c8;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            position: relative;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .recipe-card.today-card {
+            border-color: #2d5016;
+            box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.2);
+            background: linear-gradient(135deg, #f0f7ea 0%, #e4f0d8 100%);
+        }
+
+        .recipe-card.today-card .day-number {
+            color: #2d5016;
+            opacity: 1;
+        }
+
+        .recipe-card:hover {
+            border-color: #d4a574;
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .recipe-card.dragging {
+            opacity: 0.6;
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .day-number {
+            font-weight: bold;
+            color: #2d5016;
+            font-size: 0.85em;
+            margin-bottom: 6px;
+            opacity: 0.7;
+        }
+
+        .recipe-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.85em;
+            line-height: 1.3;
+            margin-bottom: 6px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .recipe-emoji {
+            font-size: 1.8em;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+
+        .recipe-tag {
+            display: inline-block;
+            font-size: 0.7em;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .tomato-tag {
+            background: #ffe0e0;
+            color: #d32f2f;
+        }
+
+        .no-tomato-tag {
+            background: #e8f5e9;
+            color: #2d5016;
+        }
+
+        /* Cheat night cards */
+        .recipe-card.cheat-card {
+            background: #fafafa;
+            border: 2px dashed #ccc;
+            color: #888;
+        }
+
+        .recipe-card.cheat-card .day-number { color: #aaa; }
+        .recipe-card.cheat-card .recipe-name { color: #888; }
+        .recipe-card.cheat-card:hover {
+            border-color: #d4a574;
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.15);
+        }
+
+        .cheat-tag {
+            background: #f0f0f0;
+            color: #999;
+        }
+
+        /* Bench cheat cards */
+        .bench-card.cheat-bench-card {
+            background: #fafafa;
+            border: 2px dashed #ddd;
+            color: #999;
+        }
+
+        .bench-card.cheat-bench-card .bench-name { color: #999; }
+
+        /* Loop indicator */
+        .loop-indicator {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #d4a574;
+            color: #d4a574;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        /* Bench section */
+        .bench-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .bench-title {
+            font-size: 1.1em;
+            color: #2d5016;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4a574;
+        }
+
+        .bench-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .bench-card {
+            background: linear-gradient(135deg, #fff8f0 0%, #ffe8d6 100%);
+            border: 2px dashed #d4a574;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .bench-card:hover {
+            border-color: #c4934a;
+            background: linear-gradient(135deg, #fffaf2 0%, #ffecdc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.15);
+        }
+
+        .bench-card.dragging {
+            opacity: 0.6;
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .bench-emoji {
+            font-size: 2em;
+            margin-bottom: 6px;
+        }
+
+        .bench-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.8em;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.1em;
+            color: #2d5016;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4a574;
+            font-weight: bold;
+        }
+
+        .staple-section {
+            margin-bottom: 18px;
+        }
+
+        .staple-subtitle {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .staple-list {
+            list-style: none;
+        }
+
+        .staple-item {
+            font-size: 0.85em;
+            color: #555;
+            padding: 4px 0;
+            border-bottom: 1px solid #f0ebe3;
+            line-height: 1.4;
+        }
+
+        .staple-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            header {
+                grid-column: 1;
+                page-break-after: avoid;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .rotation-section,
+            .bench-section {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+
+            .shopping-trip {
+                page-break-inside: avoid;
+                border-left: 2px solid #333;
+            }
+
+            .recipe-card {
+                border: 1px solid #ccc;
+                padding: 10px;
+                min-height: auto;
+            }
+
+            .recipe-card:hover {
+                border-color: #ccc;
+                box-shadow: none;
+                transform: none;
+            }
+
+            .days-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .recipe-emoji {
+                font-size: 1.2em;
+            }
+
+            .recipe-name {
+                font-size: 0.8em;
+            }
+
+            .recipe-tag {
+                font-size: 0.65em;
+            }
+
+            .bench-section {
+                display: none;
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                grid-column: 1;
+                order: 3;
+            }
+
+            .rotation-section {
+                order: 2;
+            }
+
+            .bench-section {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .shopping-trips {
+                grid-template-columns: 1fr;
+            }
+
+            .days-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .recipe-name {
+                font-size: 0.75em;
+            }
+
+            .bench-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            padding: 10px;
+        }
+
+        .instructions {
+            grid-column: 1 / -1;
+            background: #f0ebe3;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #d4a574;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ 12-Day Meal Rotation</h1>
+            <p class="subtitle">Family dinner planner for 2 adults + baby</p>
+            <div style="margin-top:12px; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <span style="color:#666; font-size:0.95em;">📆 Starting <strong id="startDateDisplay">—</strong></span>
+                <button id="setTodayBtn" style="
+                    background: linear-gradient(135deg, #2d5016, #3d6b1e);
+                    color: white;
+                    border: none;
+                    padding: 5px 14px;
+                    border-radius: 16px;
+                    font-size: 0.85em;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Set to Today</button>
+            </div>
+        </header>
+
+        <div class="instructions">
+            <strong>💡 How to use:</strong> Drag and drop recipe cards to reorder days or swap with items from the bench below. Recipes are balanced to avoid back-to-back tomato dishes.
+        </div>
+
+        <div class="rotation-section">
+            <div class="rotation-title" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                <span>📅 Dinner Rotation</span>
+                <button id="randomizeBtn" style="
+                    background: linear-gradient(135deg, #d4a574, #c8864a);
+                    color: white;
+                    border: none;
+                    padding: 8px 18px;
+                    border-radius: 20px;
+                    font-size: 0.9em;
+                    font-weight: 600;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                    transition: all 0.2s ease;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🎲 Randomize
+                </button>
+            </div>
+            <div id="randomizeFeedback" style="display:none; margin-top:8px; padding:8px 12px; background:#e8f5e3; color:#2d5016; border-radius:8px; font-size:0.85em;"></div>
+            <div class="shopping-trips" id="rotationContainer"></div>
+            <div class="loop-indicator">↻ loops back to Day 1</div>
+        </div>
+
+        <div class="bench-section">
+            <div class="bench-title">🔄 Swap Pool</div>
+            <div class="bench-grid" id="benchContainer"></div>
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-title">📝 Staples</div>
+
+        <div class="staple-section">
+            <div class="staple-subtitle">Lunch (daily for 2)</div>
+            <ul class="staple-list">
+                <li class="staple-item">Toast bread</li>
+                <li class="staple-item">Eggs</li>
+                <li class="staple-item">Cheese slices</li>
+                <li class="staple-item">Frischkäse</li>
+                <li class="staple-item">Salty butter</li>
+                <li class="staple-item">Salad leaves</li>
+                <li class="staple-item">Avocado</li>
+                <li class="staple-item">Tomatoes</li>
+            </ul>
+        </div>
+
+        <div class="staple-section">
+            <div class="staple-subtitle">Wife's Breakfast</div>
+            <ul class="staple-list">
+                <li class="staple-item">Müsli / granola</li>
+                <li class="staple-item">Cow's milk</li>
+                <li class="staple-item">Buttermilk</li>
+                <li class="staple-item">Yogurt</li>
+                <li class="staple-item">Bread + butter, jam, honey, Nutella</li>
+            </ul>
+        </div>
+
+        <div class="staple-section">
+            <div class="staple-subtitle">Snacks</div>
+            <ul class="staple-list">
+                <li class="staple-item">Fresh fruit</li>
+                <li class="staple-item">Yogurt / Quark</li>
+                <li class="staple-item">Maiswaffeln</li>
+                <li class="staple-item">Lentil crisps</li>
+                <li class="staple-item">Chocolate</li>
+            </ul>
+        </div>
+
+        <div class="staple-section">
+            <div class="staple-subtitle">Drinks</div>
+            <ul class="staple-list">
+                <li class="staple-item">Milk & oat milk</li>
+                <li class="staple-item">Coffee & tea</li>
+                <li class="staple-item">Juice</li>
+                <li class="staple-item">Non-alc beer</li>
+                <li class="staple-item">CO2 refill</li>
+            </ul>
+        </div>
+    </aside>
+
+    <script>
+        // Load data from data.js (window.MEAL_DATA)
+        if (!window.MEAL_DATA) {
+            document.body.innerHTML = '<div style="padding:2rem;color:red;font-family:sans-serif"><strong>Error:</strong> Could not load data.js. Make sure all three files (meal-rotation-calendar.html, shopping-list-generator.html, data.js) are in the same folder.</div>';
+            throw new Error('MEAL_DATA not found');
+        }
+
+        const allRecipesById = Object.fromEntries(MEAL_DATA.recipes.map(r => [r.id, r]));
+        const recipes      = MEAL_DATA.recipes.filter(r => r.inRotation);
+        const benchRecipes = MEAL_DATA.recipes.filter(r => !r.inRotation);
+
+        // State — will be overwritten by loadState() before first render
+        let rotation = [...recipes];
+        let bench = [...benchRecipes];
+        let startDate = null; // ISO date string, e.g. "2026-04-18"
+        let draggedCard = null;
+        let dragSource = null;
+
+        function formatStartDate(iso) {
+            if (!iso) return '—';
+            const [y, m, d] = iso.split('-').map(Number);
+            return new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function updateStartDateDisplay() {
+            document.getElementById('startDateDisplay').textContent = formatStartDate(startDate);
+        }
+
+        function dayDate(dayIndex) {
+            if (!startDate) return null;
+            const [y, m, d] = startDate.split('-').map(Number);
+            const date = new Date(y, m - 1, d + dayIndex);
+            return date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+
+        async function loadState() {
+            try {
+                const res = await fetch('/calendar-state.json');
+                if (!res.ok) return;
+                const state = await res.json();
+                if (state.rotation && state.bench) {
+                    rotation = state.rotation.map(id => allRecipesById[id]).filter(Boolean);
+                    bench    = state.bench.map(id => allRecipesById[id]).filter(Boolean);
+                    // add any recipes added to data.js after the state was saved
+                    const known = new Set([...state.rotation, ...state.bench]);
+                    MEAL_DATA.recipes.forEach(r => {
+                        if (!known.has(r.id)) bench.push(r);
+                    });
+                }
+                if (state.startDate) startDate = state.startDate;
+            } catch (e) { /* no saved state, use defaults */ }
+        }
+
+        // Render functions
+        function todayDayIndex() {
+            if (!startDate) return -1;
+            const [y, m, d] = startDate.split('-').map(Number);
+            const start = new Date(y, m - 1, d);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.round((today - start) / 86400000);
+            return (diff >= 0 && diff < 12) ? diff : -1;
+        }
+
+        function createRecipeCard(recipe, dayNumber = null) {
+            const card = document.createElement('div');
+            const isToday = dayNumber !== null && (dayNumber - 1) === todayDayIndex();
+            card.className = 'recipe-card' + (recipe.isCheat ? ' cheat-card' : '') + (isToday ? ' today-card' : '');
+            card.draggable = true;
+            card.dataset.recipeId = recipe.id;
+
+            const tagClass = recipe.isCheat ? 'cheat-tag' : (recipe.hasTomato ? 'tomato-tag' : 'no-tomato-tag');
+            const tagText  = recipe.isCheat ? '✌️ cheat night' : (recipe.hasTomato ? '🍅 tomato' : '🥬 no tomato');
+
+            const dateStr = (dayNumber && startDate) ? dayDate(dayNumber - 1) : '';
+            let content = `
+                <div class="day-number">${dayNumber ? `Day ${dayNumber}` : ''}${dateStr ? `<br><span style="font-weight:400;opacity:0.8;font-size:0.9em">${dateStr}</span>` : ''}</div>
+                <div class="recipe-name">
+                    <span class="recipe-emoji">${recipe.emoji}</span>
+                    <span>${recipe.name}</span>
+                </div>
+                <div class="recipe-tag ${tagClass}">${tagText}</div>
+            `;
+
+            card.innerHTML = content;
+
+            // Drag events
+            card.addEventListener('dragstart', (e) => {
+                draggedCard = recipe;
+                dragSource = 'rotation';
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            card.addEventListener('dragend', (e) => {
+                card.classList.remove('dragging');
+            });
+
+            return card;
+        }
+
+        function createBenchCard(recipe) {
+            const card = document.createElement('div');
+            card.className = 'bench-card' + (recipe.isCheat ? ' cheat-bench-card' : '');
+            card.draggable = true;
+            card.dataset.recipeId = recipe.id;
+
+            const tagClass = recipe.isCheat ? 'cheat-tag' : (recipe.hasTomato ? 'tomato-tag' : 'no-tomato-tag');
+            const tagText  = recipe.isCheat ? '✌️' : (recipe.hasTomato ? '🍅' : '🥬');
+
+            card.innerHTML = `
+                <div class="bench-emoji">${recipe.emoji}</div>
+                <div class="bench-name">${recipe.name}</div>
+                <div class="recipe-tag ${tagClass}" style="display: inline-block;">${tagText}</div>
+            `;
+
+            card.addEventListener('dragstart', (e) => {
+                draggedCard = recipe;
+                dragSource = 'bench';
+                card.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            card.addEventListener('dragend', (e) => {
+                card.classList.remove('dragging');
+            });
+
+            return card;
+        }
+
+        function renderRotation() {
+            const container = document.getElementById('rotationContainer');
+            container.innerHTML = '';
+
+            for (let trip = 0; trip < 4; trip++) {
+                const tripDiv = document.createElement('div');
+                tripDiv.className = 'shopping-trip';
+
+                const tripLabel = document.createElement('div');
+                tripLabel.className = 'trip-label';
+                tripLabel.textContent = `Shopping Trip ${trip + 1}`;
+                tripDiv.appendChild(tripLabel);
+
+                const daysDiv = document.createElement('div');
+                daysDiv.className = 'days-grid';
+
+                for (let i = 0; i < 3; i++) {
+                    const dayIndex = trip * 3 + i;
+                    const recipe = rotation[dayIndex];
+                    const dayContainer = document.createElement('div');
+                    dayContainer.className = 'day-container';
+                    dayContainer.dataset.dayIndex = dayIndex;
+
+                    const card = createRecipeCard(recipe, dayIndex + 1);
+                    dayContainer.appendChild(card);
+
+                    // Drop zone
+                    dayContainer.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        dayContainer.style.opacity = '0.7';
+                    });
+
+                    dayContainer.addEventListener('dragleave', (e) => {
+                        dayContainer.style.opacity = '1';
+                    });
+
+                    dayContainer.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        dayContainer.style.opacity = '1';
+
+                        if (!draggedCard) return;
+
+                        const targetDayIndex = parseInt(dayContainer.dataset.dayIndex);
+
+                        if (dragSource === 'rotation') {
+                            // Swap within rotation
+                            const draggedIndex = rotation.findIndex(r => r.id === draggedCard.id);
+                            if (draggedIndex !== targetDayIndex) {
+                                [rotation[draggedIndex], rotation[targetDayIndex]] =
+                                [rotation[targetDayIndex], rotation[draggedIndex]];
+                            }
+                        } else if (dragSource === 'bench') {
+                            // Move from bench to rotation
+                            const benchIndex = bench.findIndex(r => r.id === draggedCard.id);
+                            const currentRecipe = rotation[targetDayIndex];
+
+                            rotation[targetDayIndex] = draggedCard;
+                            bench[benchIndex] = currentRecipe;
+                        }
+
+                        renderRotation();
+                        renderBench();
+                        saveState();
+                    });
+
+                    daysDiv.appendChild(dayContainer);
+                }
+
+                tripDiv.appendChild(daysDiv);
+                container.appendChild(tripDiv);
+            }
+        }
+
+        function renderBench() {
+            const container = document.getElementById('benchContainer');
+            container.innerHTML = '';
+
+            bench.forEach(recipe => {
+                const card = createBenchCard(recipe);
+
+                card.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                card.addEventListener('drop', (e) => {
+                    e.preventDefault();
+
+                    if (!draggedCard) return;
+
+                    if (dragSource === 'rotation') {
+                        // Move from rotation to bench
+                        const rotationIndex = rotation.findIndex(r => r.id === draggedCard.id);
+                        const benchIndex = bench.findIndex(r => r.id === recipe.id);
+
+                        [rotation[rotationIndex], bench[benchIndex]] =
+                        [bench[benchIndex], rotation[rotationIndex]];
+
+                        renderRotation();
+                        renderBench();
+                        saveState();
+                    }
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        // Randomize: shuffle all 18 recipes, pick 12 for rotation with no back-to-back tomato dishes
+        function randomize() {
+            // Cheat nights stay on the bench — only shuffle real recipes
+            const cheats = bench.filter(r => r.isCheat);
+            const all = [...rotation, ...bench.filter(r => !r.isCheat)];
+
+            // Fisher-Yates shuffle
+            for (let i = all.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [all[i], all[j]] = [all[j], all[i]];
+            }
+
+            // Try to build a valid 12-recipe rotation with no two consecutive tomato dishes
+            // We'll try up to 200 times with different shuffles before giving up
+            let attempts = 0;
+            let newRotation = null;
+
+            while (attempts < 200) {
+                // Shuffle
+                for (let i = all.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [all[i], all[j]] = [all[j], all[i]];
+                }
+
+                // Pick first 12 that satisfy the constraint
+                const candidate = [];
+                const pool = [...all];
+                let failed = false;
+
+                while (candidate.length < 12 && pool.length > 0) {
+                    // Find next valid recipe: not same as last, and if last was tomato, this must not be
+                    const last = candidate[candidate.length - 1];
+                    const validIdx = pool.findIndex(r => {
+                        if (!last) return true; // first slot, anything goes
+                        if (last.hasTomato && r.hasTomato) return false; // no back-to-back tomato
+                        return true;
+                    });
+
+                    if (validIdx === -1) {
+                        failed = true;
+                        break;
+                    }
+
+                    candidate.push(pool.splice(validIdx, 1)[0]);
+                }
+
+                if (!failed && candidate.length === 12) {
+                    // Also check the wrap-around (day 12 → day 1 loop)
+                    if (candidate[11].hasTomato && candidate[0].hasTomato) {
+                        attempts++;
+                        continue; // loop violation, try again
+                    }
+                    newRotation = candidate;
+                    break;
+                }
+
+                attempts++;
+            }
+
+            if (!newRotation) {
+                // Fallback: just shuffle without strict constraint (very unlikely to fail)
+                newRotation = all.slice(0, 12);
+            }
+
+            rotation = newRotation;
+            bench = [...all.filter(r => !newRotation.find(n => n.id === r.id)), ...cheats];
+
+            // Show feedback
+            const feedback = document.getElementById('randomizeFeedback');
+            const tomatoCount = rotation.filter(r => r.hasTomato).length;
+            feedback.style.display = 'block';
+            feedback.textContent = `✓ New rotation: ${tomatoCount} tomato dishes, ${12 - tomatoCount} tomato-free — no back-to-back tomatoes!`;
+            setTimeout(() => { feedback.style.display = 'none'; }, 3500);
+
+            renderRotation();
+            renderBench();
+            saveState();
+        }
+
+        // -----------------------------------------------------------------------
+        // Persist state to calendar-state.json via the local server
+        // -----------------------------------------------------------------------
+        function saveState() {
+            const state = {
+                rotation:  rotation.map(r => r.id),
+                bench:     bench.map(r => r.id),
+                startDate: startDate,
+                savedAt:   new Date().toISOString()
+            };
+            fetch('/save-state', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(state)
+            }).catch(() => {});
+        }
+
+        // Initial render — restore saved state first
+        loadState().then(() => {
+            updateStartDateDisplay();
+            renderRotation();
+            renderBench();
+        });
+
+        document.getElementById('randomizeBtn').addEventListener('click', randomize);
+
+        document.getElementById('setTodayBtn').addEventListener('click', () => {
+            const today = new Date();
+            startDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            updateStartDateDisplay();
+            renderRotation();
+            saveState();
+        });
+    </script>
+</body>
+</html>

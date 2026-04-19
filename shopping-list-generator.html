@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Meal Plan Shopping List</title>
+    <script src="data.js"></script>
+    <style>
+        :root {
+            --cream: #f5f1e8;
+            --soft-green: #2d5016;
+            --warm-orange: #d4a574;
+            --light-green: #e8f0e3;
+            --text: #2c2c2c;
+            --border: #d0c4b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 100%; padding: 1rem; }
+
+        @media (min-width: 768px) {
+            .container { max-width: 600px; margin: 0 auto; }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--soft-green), #3a6b1f);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+
+        .trip-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .trip-btn {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trip-btn:hover { border-color: var(--warm-orange); background: var(--light-green); }
+        .trip-btn.active { background: var(--soft-green); color: white; border-color: var(--soft-green); }
+
+        .trip-info {
+            background: var(--light-green);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--soft-green);
+        }
+
+        .trip-info h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--soft-green); }
+
+        .dinner-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+        .dinner-item { display: flex; align-items: center; gap: 0.75rem; font-size: 1rem; }
+        .dinner-item span { font-size: 1.3rem; }
+
+        .list-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .category { margin-bottom: 2rem; }
+        .category:last-child { margin-bottom: 0; }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--soft-green);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-green);
+        }
+
+        .select-all-btn {
+            margin-left: auto;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--warm-orange);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .select-all-btn:hover { text-decoration: underline; }
+
+        .category-emoji { font-size: 1.3rem; }
+
+        .items-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--cream);
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .item:hover { background: var(--light-green); }
+
+        .item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--soft-green);
+        }
+
+        .item label {
+            flex: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .item input[type="checkbox"]:checked + label {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .custom-item-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .custom-item-section h3 { font-size: 1rem; color: var(--soft-green); margin-bottom: 1rem; }
+
+        .input-group { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+
+        .input-group input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .input-group button {
+            padding: 0.75rem 1.5rem;
+            background: var(--warm-orange);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .input-group button:hover { background: #c39464; }
+
+        .custom-items-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+        .custom-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--cream);
+            border-radius: 6px;
+        }
+
+        .custom-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--soft-green);
+        }
+
+        .custom-item label { flex: 1; cursor: pointer; display: flex; align-items: center; }
+
+        .custom-item input[type="checkbox"]:checked + label {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .custom-item-delete {
+            background: #f0f0f0;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .custom-item-delete:hover { background: #e0e0e0; color: #666; }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 480px) { .actions { grid-template-columns: 1fr; } }
+
+        .action-btn {
+            padding: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn { background: var(--warm-orange); color: white; }
+        .copy-btn:hover { background: #c39464; }
+        .print-btn { background: var(--soft-green); color: white; }
+        .print-btn:hover { background: #1f3d0d; }
+        .qr-btn { background: #4a7fc1; color: white; }
+        .qr-btn:hover { background: #3a6aa8; }
+        .reset-btn { background: #aaa; color: white; }
+        .reset-btn:hover { background: #888; }
+
+        .qr-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .qr-modal.open { display: flex; }
+
+        .qr-modal-box {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .qr-modal-box h3 { color: var(--soft-green); margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .qr-modal-box p { font-size: 0.85rem; color: #666; margin-bottom: 1.25rem; }
+        #qrImg { width: 260px; height: 260px; }
+        .qr-warn { font-size: 0.8rem; color: #b8860b; margin-top: 0.75rem; display: none; }
+        .qr-close-btn {
+            margin-top: 1.25rem;
+            padding: 0.6rem 1.5rem;
+            background: var(--soft-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .qr-close-btn:hover { background: #1f3d0d; }
+
+        .copy-feedback {
+            padding: 0.75rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .copy-feedback.show {
+            display: block;
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+
+        @media print {
+            body { background: white; }
+            .container { max-width: 100%; }
+            .trip-selector, .custom-item-section, .actions { display: none; }
+            .list-container { box-shadow: none; page-break-inside: avoid; }
+            header, .trip-info { break-after: avoid; }
+            .category { break-inside: avoid; }
+            .item { break-inside: avoid; }
+            input[type="checkbox"] { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Shopping List</h1>
+            <p>12-Day Family Meal Plan</p>
+        </header>
+
+        <div id="calendarStatus" style="
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+            background: #f5f5f5;
+            border-radius: 6px;
+            color: #666;
+        ">Loading calendar state…</div>
+
+        <div class="trip-selector" id="tripSelector"></div>
+        <div class="trip-info" id="tripInfo"></div>
+        <div id="copyFeedback" class="copy-feedback">✓ List copied to clipboard!</div>
+        <div class="list-container" id="listContainer"></div>
+
+        <div class="custom-item-section">
+            <h3>➕ Add Custom Items</h3>
+            <div class="input-group">
+                <input type="text" id="customItemInput" placeholder="Add item (e.g., wine, pet food)..." autocomplete="off">
+                <button id="addItemBtn">Add</button>
+            </div>
+            <div class="custom-items-list" id="customItemsList"></div>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn copy-btn" id="copyBtn">📋 Send to Bring!</button>
+            <div id="bringImportContainer" style="display:none">
+                <div data-bring-import="/bring-import.json" data-bring-import-version="1" style="display:none">
+                    <a href="https://www.getbring.com">Bring! Shopping List</a>
+                </div>
+            </div>
+            <button class="action-btn qr-btn" id="qrBtn">📱 QR Code</button>
+            <button class="action-btn print-btn" id="printBtn">🖨️ Print List</button>
+            <button class="action-btn reset-btn" id="resetBtn">↺ Reset List</button>
+        </div>
+    </div>
+
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-modal-box">
+            <h3>📱 Open on your phone</h3>
+            <p>Scan to open the shopping list — your phone and computer must be on the same WiFi.</p>
+            <img id="qrImg" style="display:block;margin:0 auto;" />
+            <div class="qr-warn" id="qrWarn"></div>
+            <button class="qr-close-btn" id="qrCloseBtn">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        // -----------------------------------------------------------------------
+        // Load data from data.js (must be in the same folder)
+        // -----------------------------------------------------------------------
+        if (!window.MEAL_DATA) {
+            document.body.innerHTML = '<div style="padding:2rem;color:red;font-family:sans-serif">'
+                + '<strong>Error:</strong> Could not load data.js. '
+                + 'Make sure data.js, meal-rotation-calendar.html, and shopping-list-generator.html '
+                + 'are all in the same folder.</div>';
+            throw new Error('MEAL_DATA not found');
+        }
+
+        // Build a lookup map of all recipes by id
+        const recipeById = {};
+        MEAL_DATA.recipes.forEach(r => { recipeById[r.id] = r; });
+
+        // Build day-indexed recipe map — first try calendar-state.json, fall back to data.js order
+        const recipes = {};
+        let calendarStartDate = null; // ISO string e.g. "2026-04-18"
+
+        function getTodayTripId() {
+            if (!calendarStartDate) return null;
+            const [y, m, d] = calendarStartDate.split('-').map(Number);
+            const start = new Date(y, m - 1, d);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const diff = Math.round((today - start) / 86400000);
+            if (diff < 0 || diff >= 12) return null;
+            return Math.floor(diff / 3) + 1; // trips are 0-2, 3-5, 6-8, 9-11
+        }
+
+        function tripDateLabel(tripIndex) {
+            if (!calendarStartDate) return null;
+            const [y, m, d] = calendarStartDate.split('-').map(Number);
+            const start = new Date(y, m - 1, d + tripIndex * 3);
+            const end   = new Date(y, m - 1, d + tripIndex * 3 + 2);
+            const fmt = dt => dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+            return `${fmt(start)}–${fmt(end)}`;
+        }
+
+        async function loadCalendarState() {
+            try {
+                const resp = await fetch('/calendar-state.json?_=' + Date.now());
+                if (!resp.ok) throw new Error('not found');
+                const state = await resp.json();
+                if (!Array.isArray(state.rotation) || state.rotation.length !== 12) throw new Error('invalid');
+                state.rotation.forEach((id, i) => { recipes[i + 1] = recipeById[id]; });
+                if (state.startDate) calendarStartDate = state.startDate;
+                const savedAt = state.savedAt ? new Date(state.savedAt).toLocaleString() : null;
+                document.getElementById('calendarStatus').textContent =
+                    savedAt ? `✓ Loaded from calendar (saved ${savedAt})` : '✓ Loaded from calendar';
+                document.getElementById('calendarStatus').style.color = '#2d5016';
+            } catch (e) {
+                MEAL_DATA.recipes.filter(r => r.inRotation).forEach((r, i) => { recipes[i + 1] = r; });
+                document.getElementById('calendarStatus').textContent =
+                    '⚠️ No saved calendar found — showing default order. Set your rotation in the calendar first.';
+                document.getElementById('calendarStatus').style.color = '#b8860b';
+            }
+            init();
+        }
+
+        // Build staples: { "Category label": [{ name, quantity }] }
+        const dailyStaples = {};
+        MEAL_DATA.staples.forEach(section => {
+            dailyStaples[section.category] = section.items
+                .filter(item => item.inList)
+                .map(({ name, quantity }) => ({ name, quantity }));
+        });
+
+        // Build household: { "Category (check stock)": [{ name, quantity }] }
+        const householdItems = {};
+        MEAL_DATA.household.forEach(section => {
+            const label = `${section.category} (check stock)`;
+            householdItems[label] = section.items
+                .filter(item => item.inList)
+                .map(({ name, quantity }) => ({ name, quantity }));
+        });
+
+        // Emoji map for categories
+        const categoryEmojis = {
+            'Fresh Produce':   '🥬',
+            'Refrigerated':    '🧊',
+            'Pantry & Canned': '🥫',
+            'Bread & Grains':  '🍞',
+            'Dairy & Cheese':  '🧀',
+        };
+        MEAL_DATA.staples.forEach(s => { categoryEmojis[s.category] = s.emoji; });
+        MEAL_DATA.household.forEach(s => { categoryEmojis[`${s.category} (check stock)`] = s.emoji; });
+
+        // Full ordered category list: recipe categories first, then staples, then household
+        const recipeCategories = ['Fresh Produce', 'Refrigerated', 'Pantry & Canned', 'Bread & Grains', 'Dairy & Cheese'];
+        const stapleCategories  = MEAL_DATA.staples.map(s => s.category);
+        const householdCategories = MEAL_DATA.household.map(s => `${s.category} (check stock)`);
+        const categoryOrder = [...recipeCategories, ...stapleCategories, ...householdCategories];
+
+        // Trips: 4 shopping rounds of 3 days each
+        const trips = [
+            { id: 1, label: 'Trip 1', days: [1, 2, 3] },
+            { id: 2, label: 'Trip 2', days: [4, 5, 6] },
+            { id: 3, label: 'Trip 3', days: [7, 8, 9] },
+            { id: 4, label: 'Trip 4', days: [10, 11, 12] }
+        ];
+
+        let currentTrip = 1;
+        let customItems = [];
+
+        // -----------------------------------------------------------------------
+        // Consolidate ingredients from 3 dinner recipes + staples + household
+        // -----------------------------------------------------------------------
+        function consolidateIngredients(days) {
+            const consolidated = {};
+            const seen = {};  // key → { count, ref to item in consolidated }
+
+            days.forEach(day => {
+                const recipe = recipes[day];
+                if (!recipe) return;
+                Object.entries(recipe.ingredients).forEach(([cat, items]) => {
+                    if (!consolidated[cat]) consolidated[cat] = [];
+                    items.forEach(item => {
+                        const key = item.name.toLowerCase();
+                        if (seen[key]) {
+                            seen[key].count++;
+                        } else {
+                            const entry = { name: item.name, quantity: item.quantity, count: 1 };
+                            seen[key] = entry;
+                            consolidated[cat].push(entry);
+                        }
+                    });
+                });
+            });
+
+            // Annotate quantities where an ingredient appears in multiple recipes
+            Object.values(consolidated).forEach(items => {
+                items.forEach(item => {
+                    if (item.count > 1) item.quantity = `${item.count}× needed`;
+                });
+            });
+
+            // Append staples
+            Object.entries(dailyStaples).forEach(([cat, items]) => {
+                consolidated[cat] = items;
+            });
+
+            // Append household
+            Object.entries(householdItems).forEach(([cat, items]) => {
+                consolidated[cat] = items;
+            });
+
+            return consolidated;
+        }
+
+        // -----------------------------------------------------------------------
+        // Render
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // Shopping state persistence
+        // -----------------------------------------------------------------------
+        let shoppingState = {}; // { [tripId]: { date: "YYYY-MM-DD", checked: ["cat-idx",...], custom: [{name,checked}] } }
+
+        async function loadShoppingState() {
+            try {
+                const res = await fetch('/shopping-state.json');
+                if (res.ok) shoppingState = await res.json();
+            } catch (e) { /* first run, no file yet */ }
+        }
+
+        function saveShoppingState() {
+            fetch('/save-shopping-state', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(shoppingState),
+            }).catch(() => {});
+        }
+
+        function todayStr() {
+            return new Date().toISOString().slice(0, 10);
+        }
+
+        function getTripState(tripId) {
+            const s = shoppingState[tripId];
+            if (!s || s.date !== todayStr()) return null; // stale or missing → use defaults
+            return s;
+        }
+
+        function persistCurrentTrip() {
+            const checked = [...document.querySelectorAll('#listContainer input[type="checkbox"]')]
+                .filter(cb => cb.checked)
+                .map(cb => cb.dataset.item);
+            shoppingState[currentTrip] = { date: todayStr(), checked, custom: customItems };
+            saveShoppingState();
+        }
+
+        // -----------------------------------------------------------------------
+        // Render
+        // -----------------------------------------------------------------------
+        async function init() {
+            await loadShoppingState();
+            renderTripSelector();
+            setActiveTrip(getTodayTripId() || 1);
+            document.getElementById('addItemBtn').addEventListener('click', addCustomItem);
+            document.getElementById('customItemInput').addEventListener('keypress', e => {
+                if (e.key === 'Enter') addCustomItem();
+            });
+            document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+            document.getElementById('printBtn').addEventListener('click', () => window.print());
+            document.getElementById('qrBtn').addEventListener('click', showQrCode);
+            document.getElementById('resetBtn').addEventListener('click', resetCurrentTrip);
+            document.getElementById('qrCloseBtn').addEventListener('click', () => {
+                document.getElementById('qrModal').classList.remove('open');
+            });
+            document.getElementById('qrModal').addEventListener('click', e => {
+                if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+            });
+        }
+
+        function resetCurrentTrip() {
+            delete shoppingState[currentTrip];
+            saveShoppingState();
+            customItems = [];
+            renderShoppingList();
+            renderCustomItemsList();
+        }
+
+        function renderTripSelector() {
+            const todayTrip = getTodayTripId();
+            const container = document.getElementById('tripSelector');
+            container.innerHTML = trips.map(t => {
+                const dateLabel = tripDateLabel(t.id - 1);
+                const isToday = t.id === todayTrip;
+                return `<button class="trip-btn" data-trip="${t.id}">
+                    📅 ${t.label}${isToday ? ' <span style="font-size:0.75em;background:#d4edda;color:#155724;padding:1px 5px;border-radius:8px;vertical-align:middle">today</span>' : ''}<br>
+                    <small>${dateLabel || `Days ${t.days[0]}–${t.days[2]}`}</small>
+                </button>`;
+            }).join('');
+            container.addEventListener('click', e => {
+                const btn = e.target.closest('.trip-btn');
+                if (btn) setActiveTrip(parseInt(btn.dataset.trip));
+            });
+        }
+
+        function setActiveTrip(tripId) {
+            currentTrip = tripId;
+            const saved = getTripState(tripId);
+            customItems = saved ? (saved.custom || []) : [];
+            document.querySelectorAll('.trip-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.trip) === tripId);
+            });
+            renderTripInfo();
+            renderShoppingList();
+            renderCustomItemsList();
+        }
+
+        function renderTripInfo() {
+            const trip = trips.find(t => t.id === currentTrip);
+            const daysHtml = trip.days.map(day => {
+                const r = recipes[day];
+                return `<div class="dinner-item"><span>${r.emoji}</span> Day ${day}: ${r.name}</div>`;
+            }).join('');
+            document.getElementById('tripInfo').innerHTML =
+                `<h2>📋 Dinners Included</h2><div class="dinner-list">${daysHtml}</div>`;
+        }
+
+        // Categories always shown unchecked (always buy regardless of recipes)
+        const ALWAYS_BUY = cat => /lunch|breakfast|snack/i.test(cat);
+
+        function isItemPreChecked(cat, item) {
+            // Explicit "check stock" quantity → always pre-check
+            if (item.quantity === 'check stock') return true;
+            // Recipe ingredient categories are explicitly needed — never pre-check
+            if (recipeCategories.includes(cat)) return false;
+            // Exempt staple categories — never pre-check
+            if (ALWAYS_BUY(cat)) return false;
+            // Everything else (Drinks, Household) — pre-check
+            return true;
+        }
+
+        function renderShoppingList() {
+            const trip = trips.find(t => t.id === currentTrip);
+            const all = consolidateIngredients(trip.days);
+            let html = '';
+
+            categoryOrder.forEach(cat => {
+                const items = all[cat];
+                if (!items || items.length === 0) return;
+                const emoji = categoryEmojis[cat] || '📝';
+                const safeCat = cat.replace(/[^a-z0-9]/gi, '_');
+                html += `
+                    <div class="category">
+                        <div class="category-header">
+                            <span class="category-emoji">${emoji}</span>
+                            <span>${cat}</span>
+                            <button class="select-all-btn" data-cat="${safeCat}">Select all</button>
+                        </div>
+                        <div class="items-list" id="items-${safeCat}">
+                            ${items.map((item, idx) => `
+                                <div class="item">
+                                    <input type="checkbox" id="item-${cat}-${idx}" data-item="${cat}-${idx}" ${isItemPreChecked(cat, item) ? 'checked' : ''}>
+                                    <label for="item-${cat}-${idx}">
+                                        ${item.name}${item.quantity ? ` • ${item.quantity}` : ''}
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+            });
+
+            document.getElementById('listContainer').innerHTML = html;
+
+            // Restore saved checked state (overrides defaults if saved today)
+            const saved = getTripState(currentTrip);
+            if (saved) {
+                document.querySelectorAll('#listContainer input[type="checkbox"]').forEach(cb => {
+                    cb.checked = saved.checked.includes(cb.dataset.item);
+                });
+            }
+
+            // Persist on every checkbox change
+            document.querySelectorAll('#listContainer input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', persistCurrentTrip);
+            });
+
+            document.querySelectorAll('.select-all-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const list = document.getElementById(`items-${btn.dataset.cat}`);
+                    const boxes = list.querySelectorAll('input[type="checkbox"]');
+                    const allChecked = [...boxes].every(cb => cb.checked);
+                    boxes.forEach(cb => { cb.checked = !allChecked; });
+                    btn.textContent = allChecked ? 'Select all' : 'Unselect all';
+                    persistCurrentTrip();
+                });
+            });
+        }
+
+        function addCustomItem() {
+            const input = document.getElementById('customItemInput');
+            const value = input.value.trim();
+            if (!value) return;
+            customItems.push({ name: value, checked: false });
+            input.value = '';
+            renderCustomItemsList();
+            persistCurrentTrip();
+        }
+
+        function renderCustomItemsList() {
+            const container = document.getElementById('customItemsList');
+            if (customItems.length === 0) { container.innerHTML = ''; return; }
+            container.innerHTML = customItems.map((item, idx) => `
+                <div class="custom-item">
+                    <input type="checkbox" id="custom-${idx}" data-idx="${idx}" ${item.checked ? 'checked' : ''}>
+                    <label for="custom-${idx}">${item.name}</label>
+                    <button class="custom-item-delete" data-idx="${idx}">✕</button>
+                </div>
+            `).join('');
+            container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.addEventListener('change', e => {
+                    customItems[parseInt(e.target.dataset.idx)].checked = e.target.checked;
+                    persistCurrentTrip();
+                });
+            });
+            container.querySelectorAll('.custom-item-delete').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    customItems.splice(parseInt(e.target.dataset.idx), 1);
+                    renderCustomItemsList();
+                    persistCurrentTrip();
+                });
+            });
+        }
+
+        async function copyToClipboard() {
+            const items = getUncheckedItems();
+            if (items.length === 0) { alert('No items to send!'); return; }
+
+            const bringJson = {
+                author: 'Meal Plan',
+                linkOutUrl: 'http://localhost:4321/shopping-list-generator.html',
+                name: 'Shopping List',
+                tagline: '',
+                yield: '',
+                time: '',
+                items: items.map(name => ({ itemId: name }))
+            };
+
+            await fetch('/save-bring-import', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bringJson)
+            });
+
+            // Click the button the Bring widget rendered
+            const bringBtn = document.querySelector('#bringImportContainer a, #bringImportContainer button');
+            if (bringBtn) {
+                bringBtn.click();
+            } else {
+                alert('Bring widget not ready yet — please try again.');
+            }
+        }
+
+        function getUncheckedItems() {
+            const trip = trips.find(t => t.id === currentTrip);
+            const all = consolidateIngredients(trip.days);
+            const items = [];
+            categoryOrder.forEach(cat => {
+                const catItems = all[cat];
+                if (!catItems || catItems.length === 0) return;
+                catItems.forEach((item, idx) => {
+                    const cb = document.querySelector(`input[data-item="${cat}-${idx}"]`);
+                    if (!cb || !cb.checked) items.push(item.name);
+                });
+            });
+            customItems.filter(i => !i.checked).forEach(i => items.push(i.name));
+            return items;
+        }
+
+        function buildListText() {
+            const trip = trips.find(t => t.id === currentTrip);
+            const all = consolidateIngredients(trip.days);
+            let text = `Shopping — ${trip.label} (Days ${trip.days[0]}–${trip.days[2]})\n`;
+
+            categoryOrder.forEach(cat => {
+                const items = all[cat];
+                if (!items || items.length === 0) return;
+                const unchecked = items.filter((item, idx) => {
+                    const cb = document.querySelector(`input[data-item="${cat}-${idx}"]`);
+                    return !cb || !cb.checked;
+                });
+                if (unchecked.length === 0) return;
+                text += `\n${cat}\n`;
+                unchecked.forEach(item => {
+                    text += `- ${item.name}${item.quantity ? ` (${item.quantity})` : ''}\n`;
+                });
+            });
+
+            const uncheckedCustom = customItems.filter(i => !i.checked);
+            if (uncheckedCustom.length > 0) {
+                text += '\nExtra\n';
+                uncheckedCustom.forEach(i => { text += `- ${i.name}\n`; });
+            }
+            return text;
+        }
+
+        async function showQrCode() {
+            const warn = document.getElementById('qrWarn');
+            const img = document.getElementById('qrImg');
+            warn.style.display = 'none';
+            img.src = '';
+            document.getElementById('qrModal').classList.add('open');
+            let ip = '192.168.2.33';
+            try {
+                const res = await fetch('/lan-ip');
+                const data = await res.json();
+                if (data.ip) ip = data.ip;
+            } catch (e) {}
+            const url = `http://${ip}:4321/shopping-list-generator.html`;
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(url)}`;
+        }
+
+        loadCalendarState();
+
+        // Load Bring widget after page is ready
+        const bringScript = document.createElement('script');
+        bringScript.async = true;
+        bringScript.src = '//platform.getbring.com/widgets/import.js';
+        document.body.appendChild(bringScript);
+    </script>
+</body>
+</html>

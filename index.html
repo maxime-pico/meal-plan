@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Meal Plan</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f1e8 0%, #e8ded0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { color: #2d5016; margin-bottom: 0.5rem; font-size: 2rem; }
+        p { color: #888; margin-bottom: 2rem; }
+        .btn {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-calendar { background: #2d5016; color: white; }
+        .btn-shopping { background: #d4a574; color: white; }
+        .note { font-size: 0.8rem; color: #aaa; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🍽️ Meal Plan</h1>
+        <p>Family dinner planner · 12-day rotation</p>
+        <a href="meal-rotation-calendar.html" class="btn btn-calendar">📅 Dinner Calendar</a>
+        <a href="shopping-list-generator.html" class="btn btn-shopping">🛒 Shopping List</a>
+        <p class="note">Set your dinner rotation first, then open the shopping list — it will automatically reflect your choices.</p>
+    </div>
+</body>
+</html>
