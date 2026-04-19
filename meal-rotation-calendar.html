@@ -28,6 +28,29 @@
             gap: 20px;
         }
 
+        .site-nav {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 8px;
+        }
+
+        .site-nav a {
+            text-decoration: none;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2d5016;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(45,80,22,0.2);
+            transition: background 0.15s;
+        }
+
+        .site-nav a:hover { background: rgba(255,255,255,0.9); }
+        .site-nav a.active { background: #2d5016; color: white; border-color: #2d5016; }
+
         header {
             grid-column: 1 / -1;
             text-align: center;
@@ -446,6 +469,11 @@
 </head>
 <body>
     <div class="container">
+        <nav class="site-nav">
+            <a href="index.html">🍽️ Home</a>
+            <a href="meal-rotation-calendar.html" class="active">📅 Calendar</a>
+            <a href="shopping-list-generator.html">🛒 Shopping List</a>
+        </nav>
         <header>
             <h1>🍽️ 12-Day Meal Rotation</h1>
             <p class="subtitle">Family dinner planner for 2 adults + baby</p>

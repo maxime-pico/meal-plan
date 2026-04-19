@@ -43,13 +43,13 @@ window.MEAL_DATA = {
           { name: "Risotto rice",              quantity: "300g" },
           { name: "Vegetable broth",           quantity: "1L" },
           { name: "Dried porcini mushrooms",   quantity: "small pack" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
-          { name: "Butter",                    quantity: "to taste" },
-          { name: "Parmesan",                  quantity: "to taste" },
-          { name: "Pecorino",                  quantity: "to taste" }
+          { name: "Butter",                    quantity: "check stock" },
+          { name: "Parmesan",                  quantity: "check stock" },
+          { name: "Pecorino",                  quantity: "check stock" }
         ]
       }
     },
@@ -69,11 +69,11 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Canned peeled tomatoes",    quantity: "2 cans" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Cumin",                     quantity: "to taste" },
-          { name: "Paprika",                   quantity: "to taste" },
-          { name: "Cayenne pepper",            quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Cumin",                     quantity: "check stock" },
+          { name: "Paprika",                   quantity: "check stock" },
+          { name: "Cayenne pepper",            quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Refrigerated": [
           { name: "Eggs",                      quantity: "6" }
@@ -98,8 +98,8 @@ window.MEAL_DATA = {
           { name: "Orzo / Risoni pasta",       quantity: "250g" },
           { name: "Peas (fresh or frozen)",    quantity: "150g" },
           { name: "Pine nuts (optional)",      quantity: "handful" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Feta",                      quantity: "200g" }
@@ -124,11 +124,11 @@ window.MEAL_DATA = {
           { name: "Black beans (canned)",      quantity: "1 can" },
           { name: "Chickpeas (canned)",        quantity: "1 can" },
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Cumin",                     quantity: "to taste" },
-          { name: "Paprika",                   quantity: "to taste" },
-          { name: "Chili powder",              quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Cumin",                     quantity: "check stock" },
+          { name: "Paprika",                   quantity: "check stock" },
+          { name: "Chili powder",              quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice or bread (to serve)",  quantity: "as needed" }
         ]
       }
@@ -154,7 +154,7 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Black pepper",              quantity: "generously" },
-          { name: "Salt",                      quantity: "to taste" }
+          { name: "Salt",                      quantity: "check stock" }
         ]
       }
     },
@@ -179,12 +179,12 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Passata",                   quantity: "400ml" },
           { name: "Tomato paste",              quantity: "1–2 tbsp" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Fresh mozzarella",          quantity: "1 ball" },
-          { name: "Parmesan",                  quantity: "to taste" }
+          { name: "Parmesan",                  quantity: "check stock" }
         ]
       }
     },
@@ -204,9 +204,9 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Coconut milk (canned)",     quantity: "1 can" },
           { name: "Chickpeas (canned)",        quantity: "1 can" },
-          { name: "Curry paste or powder",     quantity: "to taste" },
-          { name: "Oil",                       quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Curry paste or powder",     quantity: "check stock" },
+          { name: "Oil",                       quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice (to serve)",           quantity: "as needed" }
         ]
       }
@@ -227,9 +227,9 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Red lentils",               quantity: "150g" },
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Italian herbs (dried)",     quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Italian herbs (dried)",     quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta (to serve)",          quantity: "as needed" }
         ]
       }
@@ -254,11 +254,11 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Vegetable broth cube",      quantity: "1" },
           { name: "White wine (optional)",     quantity: "splash" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice",                      quantity: "as needed" }
         ],
         "Dairy & Cheese": [
-          { name: "Parmesan (optional)",       quantity: "to taste" }
+          { name: "Parmesan (optional)",       quantity: "check stock" }
         ]
       }
     },
@@ -283,9 +283,9 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Canned chopped tomatoes",   quantity: "1 can" },
           { name: "Tomato paste",              quantity: "2–3 tbsp" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Italian herbs",             quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Italian herbs",             quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Ricotta or crème fraîche",  quantity: "250g" },
@@ -311,8 +311,8 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Quinoa",                    quantity: "200g" },
           { name: "Corn (canned)",             quantity: "1 can" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Refrigerated": [
           { name: "Vegetarian Maultaschen",    quantity: "1 pack (ready-made)" }
@@ -334,8 +334,8 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Chickpeas (canned)",        quantity: "2 cans" },
           { name: "Canned tomatoes",           quantity: "1 can" },
-          { name: "Garam masala / curry",      quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Garam masala / curry",      quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice or naan (to serve)",   quantity: "as needed" }
         ],
         "Refrigerated": [
@@ -364,9 +364,9 @@ window.MEAL_DATA = {
           { name: "Risoni (kritharaki)",       quantity: "250g" },
           { name: "Olives",                    quantity: "handful" },
           { name: "Corn (canned, optional)",   quantity: "1 can" },
-          { name: "Greek herb mix",            quantity: "to taste" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Greek herb mix",            quantity: "check stock" },
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Feta",                      quantity: "100–150g" }
@@ -387,8 +387,8 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Mustard",                   quantity: "1 tbsp" },
-          { name: "Oil",                       quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Oil",                       quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta or rice (to serve)",  quantity: "as needed" }
         ],
         "Dairy & Cheese": [
@@ -411,7 +411,7 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Vegetable broth",           quantity: "1L" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Salt and pepper",           quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Cream or oat cream",        quantity: "100ml" }
@@ -439,7 +439,7 @@ window.MEAL_DATA = {
           { name: "Curry powder",              quantity: "1–2 tsp" },
           { name: "Cumin",                     quantity: "1 tsp" },
           { name: "Turmeric",                  quantity: "½ tsp" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice (to serve)",           quantity: "as needed" }
         ]
       }
@@ -466,11 +466,11 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Pickles",                   quantity: "as needed" },
-          { name: "Ketchup",                   quantity: "to taste" },
-          { name: "Mustard",                   quantity: "to taste" },
-          { name: "Mayonnaise",                quantity: "to taste" },
-          { name: "Olive oil",                 quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" }
+          { name: "Ketchup",                   quantity: "check stock" },
+          { name: "Mustard",                   quantity: "check stock" },
+          { name: "Mayonnaise",                quantity: "check stock" },
+          { name: "Olive oil",                 quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" }
         ]
       }
     },
@@ -491,8 +491,8 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
           { name: "Olive oil",                 quantity: "2 tbsp" },
-          { name: "Oregano",                   quantity: "to taste" },
-          { name: "Salt and pepper",           quantity: "to taste" },
+          { name: "Oregano",                   quantity: "check stock" },
+          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta or gnocchi (to serve)", quantity: "as needed" }
         ]
       }
@@ -518,8 +518,8 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Vegetable broth",quantity: "1L" },
           { name: "Butter",         quantity: "1 tsp" },
-          { name: "Salt and pepper",quantity: "to taste" },
-          { name: "Nutmeg",         quantity: "to taste" }
+          { name: "Salt and pepper",quantity: "check stock" },
+          { name: "Nutmeg",         quantity: "check stock" }
         ]
       }
     },
