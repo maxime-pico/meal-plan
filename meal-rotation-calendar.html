@@ -626,7 +626,10 @@
                     // add any recipes added to data.js after the state was saved
                     const known = new Set([...state.rotation, ...state.bench]);
                     MEAL_DATA.recipes.forEach(r => {
-                        if (!known.has(r.id)) bench.push(r);
+                        if (!known.has(r.id)) {
+                            if (r.inRotation && !r.isCheat) rotation.push(r);
+                            else bench.push(r);
+                        }
                     });
                 }
                 if (state.startDate) startDate = state.startDate;
