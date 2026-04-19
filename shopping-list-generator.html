@@ -356,7 +356,7 @@
         <div class="actions">
             <button class="action-btn copy-btn" id="copyBtn">📋 Send to Bring!</button>
             <div id="bringImportContainer" style="display:none">
-                <div data-bring-import="/bring-import.json" data-bring-import-version="1" style="display:none">
+                <div id="bringImportDiv" data-bring-import-version="1" style="display:none">
                     <a href="https://www.getbring.com">Bring! Shopping List</a>
                 </div>
             </div>
@@ -833,6 +833,9 @@
         }
 
         loadCalendarState();
+
+        // Set absolute URL so the Bring widget resolves it against our server, not its own origin
+        document.getElementById('bringImportDiv').setAttribute('data-bring-import', window.location.origin + '/bring-import.json');
 
         // Load Bring widget after page is ready
         const bringScript = document.createElement('script');
