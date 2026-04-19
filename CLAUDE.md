@@ -70,7 +70,7 @@ Same shape as staples. Rendered as `"Category (check stock)"` in the shopping li
 - Goal: shop every 3 days using the 12-day rotation → 4 shopping trips
 - Tomato-heavy dishes must be spaced (no back-to-back). The randomize button enforces this.
 - Pumpkin-Red Lentil Soup skipped for now (out of season) — set `inRotation: false` in data.js.
-- Uses Bring! app for shopping — the "Copy for Bring!" button copies unchecked items as plain text.
+- Uses Bring! app for shopping — the "Send to Bring!" button saves unchecked items to `bring-import.json` via the Bring widget and imports them directly into the app.
 
 ## Common tasks
 
