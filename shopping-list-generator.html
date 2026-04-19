@@ -534,6 +534,14 @@
         // Shopping state persistence
         // -----------------------------------------------------------------------
         let shoppingState = {}; // { [tripId]: { date: "YYYY-MM-DD", checked: ["cat-idx",...], custom: [{name,checked}] } }
+        let authToken = null;
+        fetch('/config').then(r => r.json()).then(cfg => { authToken = cfg.authToken; }).catch(() => {});
+
+        function authHeaders() {
+            const h = { 'Content-Type': 'application/json' };
+            if (authToken) h['Authorization'] = `Bearer ${authToken}`;
+            return h;
+        }
 
         async function loadShoppingState() {
             try {
@@ -545,7 +553,7 @@
         function saveShoppingState() {
             fetch('/save-shopping-state', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify(shoppingState),
             }).catch(() => {});
         }
@@ -760,7 +768,7 @@
 
             await fetch('/save-bring-import', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify(bringJson)
             });
 

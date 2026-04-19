@@ -872,6 +872,14 @@
         // -----------------------------------------------------------------------
         // Persist state to calendar-state.json via the local server
         // -----------------------------------------------------------------------
+        let authToken = null;
+
+        function authHeaders() {
+            const h = { 'Content-Type': 'application/json' };
+            if (authToken) h['Authorization'] = `Bearer ${authToken}`;
+            return h;
+        }
+
         function saveState() {
             const state = {
                 rotation:  rotation.map(r => r.id),
@@ -881,12 +889,13 @@
             };
             fetch('/save-state', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: authHeaders(),
                 body: JSON.stringify(state)
             }).catch(() => {});
         }
 
-        // Initial render — restore saved state first
+        // Initial render — load config, then restore saved state
+        fetch('/config').then(r => r.json()).then(cfg => { authToken = cfg.authToken; }).catch(() => {});
         loadState().then(() => {
             updateStartDateDisplay();
             renderRotation();

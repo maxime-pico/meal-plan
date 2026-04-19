@@ -15,6 +15,8 @@ const DIR = __dirname;
 const STATE_FILE = path.join(DIR, 'calendar-state.json');
 const SHOPPING_STATE_FILE = path.join(DIR, 'shopping-state.json');
 const BRING_IMPORT_FILE = path.join(DIR, 'bring-import.json');
+const AUTH_TOKEN = process.env.AUTH_TOKEN || null;
+const MAX_BODY = 100 * 1024; // 100 KB
 
 const MIME = {
   '.html': 'text/html',
@@ -41,8 +43,16 @@ const server = http.createServer((req, res) => {
     res.writeHead(204); res.end(); return;
   }
 
-  // GET /lan-ip — return local network IP for QR code
+  // GET /config — exposes non-secret client config (auth token for POST calls)
+  if (req.method === 'GET' && req.url === '/config') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ authToken: AUTH_TOKEN || null }));
+    return;
+  }
+
+  // GET /lan-ip — only available when not deployed (no AUTH_TOKEN set)
   if (req.method === 'GET' && req.url === '/lan-ip') {
+    if (AUTH_TOKEN) { res.writeHead(404); res.end('Not found'); return; }
     const nets = os.networkInterfaces();
     let lanIp = null;
     for (const iface of Object.values(nets)) {
@@ -56,57 +66,61 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  function readBody(req, res, cb) {
+    let body = '';
+    let size = 0;
+    req.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_BODY) {
+        res.writeHead(413, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'Payload too large' }));
+        req.destroy();
+        return;
+      }
+      body += chunk;
+    });
+    req.on('end', () => cb(body));
+  }
+
+  function checkAuth(req, res) {
+    if (!AUTH_TOKEN) return true;
+    const header = req.headers['authorization'] || '';
+    if (header === `Bearer ${AUTH_TOKEN}`) return true;
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: false, error: 'Unauthorized' }));
+    return false;
+  }
+
+  function saveJson(file, body, res) {
+    try {
+      JSON.parse(body);
+      fs.writeFileSync(file, body, 'utf8');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: true }));
+    } catch (e) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: e.message }));
+    }
+  }
+
   // POST /save-state — write calendar-state.json
   if (req.method === 'POST' && req.url === '/save-state') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        JSON.parse(body); // validate JSON before writing
-        fs.writeFileSync(STATE_FILE, body, 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true }));
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: e.message }));
-      }
-    });
+    if (!checkAuth(req, res)) return;
+    readBody(req, res, body => saveJson(STATE_FILE, body, res));
     return;
   }
 
   // POST /save-shopping-state — write shopping-state.json
   if (req.method === 'POST' && req.url === '/save-shopping-state') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        JSON.parse(body);
-        fs.writeFileSync(SHOPPING_STATE_FILE, body, 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true }));
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: e.message }));
-      }
-    });
+    if (!checkAuth(req, res)) return;
+    readBody(req, res, body => saveJson(SHOPPING_STATE_FILE, body, res));
     return;
   }
 
   // POST /save-bring-import — write bring-import.json for the Bring widget
   if (req.method === 'POST' && req.url === '/save-bring-import') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        JSON.parse(body);
-        fs.writeFileSync(BRING_IMPORT_FILE, body, 'utf8');
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true }));
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: e.message }));
-      }
-    });
+    if (!checkAuth(req, res)) return;
+    readBody(req, res, body => saveJson(BRING_IMPORT_FILE, body, res));
     return;
   }
 
