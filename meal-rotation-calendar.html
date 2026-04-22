@@ -478,7 +478,11 @@
             <h1>🍽️ 12-Day Meal Rotation</h1>
             <p class="subtitle">Family dinner planner for 2 adults + baby</p>
             <div style="margin-top:12px; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <span style="color:#666; font-size:0.95em;">📆 Starting <strong id="startDateDisplay">—</strong></span>
+                <span style="color:#666; font-size:0.95em;">📆 Starting <input type="date" id="startDateInput" style="
+                    border: none; border-bottom: 1.5px solid #aaa; background: transparent;
+                    font-size: 0.95em; font-family: inherit; color: #333; cursor: pointer;
+                    padding: 1px 2px; outline: none;
+                " title="Click to change start date"></span>
                 <button id="setTodayBtn" style="
                     background: linear-gradient(135deg, #2d5016, #3d6b1e);
                     color: white;
@@ -598,14 +602,9 @@
         let draggedCard = null;
         let dragSource = null;
 
-        function formatStartDate(iso) {
-            if (!iso) return '—';
-            const [y, m, d] = iso.split('-').map(Number);
-            return new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-        }
-
-        function updateStartDateDisplay() {
-            document.getElementById('startDateDisplay').textContent = formatStartDate(startDate);
+function updateStartDateDisplay() {
+            const input = document.getElementById('startDateInput');
+            input.value = startDate || '';
         }
 
         function dayDate(dayIndex) {
@@ -681,6 +680,8 @@
                 card.classList.remove('dragging');
             });
 
+            addTouchDrag(card, recipe, 'rotation');
+
             return card;
         }
 
@@ -710,7 +711,99 @@
                 card.classList.remove('dragging');
             });
 
+            addTouchDrag(card, recipe, 'bench');
+
             return card;
+        }
+
+        // Touch drag-and-drop support
+        let touchClone = null;
+        let touchOffsetX = 0;
+        let touchOffsetY = 0;
+
+        function addTouchDrag(card, recipe, source) {
+            card.addEventListener('touchstart', (e) => {
+                if (e.touches.length !== 1) return;
+                const touch = e.touches[0];
+                const rect = card.getBoundingClientRect();
+                touchOffsetX = touch.clientX - rect.left;
+                touchOffsetY = touch.clientY - rect.top;
+
+                draggedCard = recipe;
+                dragSource = source;
+
+                // Create floating clone
+                touchClone = card.cloneNode(true);
+                touchClone.style.cssText = `
+                    position: fixed;
+                    left: ${rect.left}px;
+                    top: ${rect.top}px;
+                    width: ${rect.width}px;
+                    pointer-events: none;
+                    opacity: 0.85;
+                    transform: scale(1.05);
+                    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+                    z-index: 9999;
+                    transition: none;
+                `;
+                document.body.appendChild(touchClone);
+                card.style.opacity = '0.4';
+            }, { passive: true });
+
+            card.addEventListener('touchmove', (e) => {
+                if (!touchClone) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                touchClone.style.left = `${touch.clientX - touchOffsetX}px`;
+                touchClone.style.top  = `${touch.clientY - touchOffsetY}px`;
+            }, { passive: false });
+
+            card.addEventListener('touchend', (e) => {
+                if (!touchClone) return;
+                touchClone.remove();
+                touchClone = null;
+                card.style.opacity = '';
+
+                const touch = e.changedTouches[0];
+                const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                if (!el) { draggedCard = null; return; }
+
+                // Find nearest day-container or bench-card
+                const dayContainer = el.closest('.day-container');
+                const benchCard = el.closest('.bench-card');
+
+                if (dayContainer) {
+                    const targetDayIndex = parseInt(dayContainer.dataset.dayIndex);
+                    if (dragSource === 'rotation') {
+                        const draggedIndex = rotation.findIndex(r => r.id === draggedCard.id);
+                        if (draggedIndex !== targetDayIndex) {
+                            [rotation[draggedIndex], rotation[targetDayIndex]] =
+                            [rotation[targetDayIndex], rotation[draggedIndex]];
+                        }
+                    } else if (dragSource === 'bench') {
+                        const benchIndex = bench.findIndex(r => r.id === draggedCard.id);
+                        const currentRecipe = rotation[targetDayIndex];
+                        rotation[targetDayIndex] = draggedCard;
+                        bench[benchIndex] = currentRecipe;
+                    }
+                    renderRotation();
+                    renderBench();
+                    saveState();
+                } else if (benchCard && dragSource === 'rotation') {
+                    const targetRecipeId = parseInt(benchCard.dataset.recipeId);
+                    const rotationIndex = rotation.findIndex(r => r.id === draggedCard.id);
+                    const benchIndex = bench.findIndex(r => r.id === targetRecipeId);
+                    if (benchIndex !== -1) {
+                        [rotation[rotationIndex], bench[benchIndex]] =
+                        [bench[benchIndex], rotation[rotationIndex]];
+                        renderRotation();
+                        renderBench();
+                        saveState();
+                    }
+                }
+
+                draggedCard = null;
+            });
         }
 
         function renderRotation() {
@@ -934,6 +1027,12 @@
         });
 
         document.getElementById('randomizeBtn').addEventListener('click', randomize);
+
+        document.getElementById('startDateInput').addEventListener('change', (e) => {
+            startDate = e.target.value || null;
+            renderRotation();
+            saveState();
+        });
 
         document.getElementById('setTodayBtn').addEventListener('click', () => {
             const today = new Date();

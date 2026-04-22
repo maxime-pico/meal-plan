@@ -30,6 +30,7 @@ window.MEAL_DATA = {
     {
       id: 1,
       name: "Mushroom Risotto",
+      tag: "Mushroom Risotto",
       emoji: "🍚",
       hasTomato: false,
       inRotation: true,
@@ -43,8 +44,7 @@ window.MEAL_DATA = {
           { name: "Risotto rice",              quantity: "300g" },
           { name: "Vegetable broth",           quantity: "1L" },
           { name: "Dried porcini mushrooms",   quantity: "small pack" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Butter",                    quantity: "check stock" },
@@ -57,6 +57,7 @@ window.MEAL_DATA = {
     {
       id: 2,
       name: "Shakshuka",
+      tag: "Shakshuka",
       emoji: "🍳",
       hasTomato: true,
       inRotation: true,
@@ -72,8 +73,7 @@ window.MEAL_DATA = {
           { name: "Olive oil",                 quantity: "check stock" },
           { name: "Cumin",                     quantity: "check stock" },
           { name: "Paprika",                   quantity: "check stock" },
-          { name: "Cayenne pepper",            quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Cayenne pepper",            quantity: "check stock" }
         ],
         "Refrigerated": [
           { name: "Eggs",                      quantity: "6" }
@@ -84,6 +84,7 @@ window.MEAL_DATA = {
     {
       id: 3,
       name: "Lemon Herb Orzo with Asparagus, Peas & Feta",
+      tag: "Lemon Orzo",
       emoji: "🍋",
       hasTomato: false,
       inRotation: true,
@@ -98,8 +99,7 @@ window.MEAL_DATA = {
           { name: "Orzo / Risoni pasta",       quantity: "250g" },
           { name: "Peas (fresh or frozen)",    quantity: "150g" },
           { name: "Pine nuts (optional)",      quantity: "handful" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Feta",                      quantity: "200g" }
@@ -110,6 +110,7 @@ window.MEAL_DATA = {
     {
       id: 4,
       name: "Chili sin Carne",
+      tag: "Chili",
       emoji: "🌶️",
       hasTomato: true,
       inRotation: true,
@@ -117,19 +118,18 @@ window.MEAL_DATA = {
         "Fresh Produce": [
           { name: "Onions",                    quantity: "1" },
           { name: "Bell peppers",              quantity: "1" },
-          { name: "Garlic cloves",             quantity: "2" }
+          { name: "Garlic cloves",             quantity: "2" },
+          { name: "Fresh mushrooms",           quantity: "400g" }
         ],
         "Pantry & Canned": [
           { name: "Kidney beans (canned)",     quantity: "1 can" },
-          { name: "Black beans (canned)",      quantity: "1 can" },
-          { name: "Chickpeas (canned)",        quantity: "1 can" },
+          { name: "Smoked tofu",               quantity: "200g" },
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
           { name: "Olive oil",                 quantity: "check stock" },
           { name: "Cumin",                     quantity: "check stock" },
           { name: "Paprika",                   quantity: "check stock" },
           { name: "Chili powder",              quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" },
-          { name: "Rice or bread (to serve)",  quantity: "as needed" }
+          { name: "Rice",                      quantity: "200g" }
         ]
       }
     },
@@ -137,6 +137,7 @@ window.MEAL_DATA = {
     {
       id: 5,
       name: "Spaghetti Carbonara",
+      tag: "Carbonara",
       emoji: "🍝",
       hasTomato: false,
       inRotation: true,
@@ -153,8 +154,7 @@ window.MEAL_DATA = {
           { name: "Parmesan",                  quantity: "50g" }
         ],
         "Pantry & Canned": [
-          { name: "Black pepper",              quantity: "generously" },
-          { name: "Salt",                      quantity: "check stock" }
+          { name: "Black pepper",              quantity: "generously" }
         ]
       }
     },
@@ -162,6 +162,7 @@ window.MEAL_DATA = {
     {
       id: 6,
       name: "Pasta with Tomato Sauce & Mozzarella",
+      tag: "Pasta Tomato",
       emoji: "🍅",
       hasTomato: true,
       inRotation: true,
@@ -179,8 +180,7 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Passata",                   quantity: "400ml" },
           { name: "Tomato paste",              quantity: "1–2 tbsp" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Fresh mozzarella",          quantity: "1 ball" },
@@ -192,6 +192,7 @@ window.MEAL_DATA = {
     {
       id: 7,
       name: "Vegetable Coconut Curry",
+      tag: "Veg. Curry",
       emoji: "🥘",
       hasTomato: false,
       inRotation: true,
@@ -206,8 +207,7 @@ window.MEAL_DATA = {
           { name: "Chickpeas (canned)",        quantity: "1 can" },
           { name: "Curry paste or powder",     quantity: "check stock" },
           { name: "Oil",                       quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" },
-          { name: "Rice (to serve)",           quantity: "as needed" }
+          { name: "Rice (to serve)",           quantity: "200g" }
         ]
       }
     },
@@ -215,6 +215,7 @@ window.MEAL_DATA = {
     {
       id: 8,
       name: "Lentil Bolognese",
+      tag: "Lentil Bolognese",
       emoji: "🍲",
       hasTomato: true,
       inRotation: true,
@@ -229,7 +230,6 @@ window.MEAL_DATA = {
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
           { name: "Olive oil",                 quantity: "check stock" },
           { name: "Italian herbs (dried)",     quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta (to serve)",          quantity: "as needed" }
         ]
       }
@@ -238,6 +238,7 @@ window.MEAL_DATA = {
     {
       id: 9,
       name: "Creamy Mushroom & Smoked Tofu Pan Sauce + Rice",
+      tag: "Creamy Tofu",
       emoji: "🍄",
       hasTomato: false,
       inRotation: true,
@@ -254,7 +255,6 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Vegetable broth cube",      quantity: "1" },
           { name: "White wine (optional)",     quantity: "splash" },
-          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice",                      quantity: "as needed" }
         ],
         "Dairy & Cheese": [
@@ -266,30 +266,34 @@ window.MEAL_DATA = {
     {
       id: 10,
       name: "Veggie Lasagna",
+      tag: "Veg. Lasagna",
       emoji: "🧀",
       hasTomato: true,
       inRotation: true,
       ingredients: {
         "Fresh Produce": [
-          { name: "Zucchini",                  quantity: "1" },
           { name: "Carrots",                   quantity: "1" },
           { name: "Onions",                    quantity: "1" },
           { name: "Garlic cloves",             quantity: "2" },
-          { name: "Spinach (fresh or frozen)", quantity: "200–300g" }
+          { name: "Fresh mushrooms",           quantity: "400g" },
+          { name: "Celery (optional)",          quantity: "bunch" },
         ],
         "Bread & Grains": [
           { name: "Lasagna sheets",            quantity: "as needed" }
         ],
         "Pantry & Canned": [
+          { name: "Smoked tofu",               quantity: "200g" },
           { name: "Canned chopped tomatoes",   quantity: "1 can" },
           { name: "Tomato paste",              quantity: "2–3 tbsp" },
           { name: "Olive oil",                 quantity: "check stock" },
           { name: "Italian herbs",             quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Flour",                     quantity: "200g" }
         ],
         "Dairy & Cheese": [
-          { name: "Ricotta or crème fraîche",  quantity: "250g" },
-          { name: "Grated mozzarella",         quantity: "150–200g" }
+          { name: "Milk",                      quantity: "200ml" },
+          { name: "Butter",                    quantity: "200g" },
+          { name: "Parmesan",                  quantity: "50g" },
+          { name: "Mozzarella",                quantity: "150–200g" }
         ]
       }
     },
@@ -297,6 +301,7 @@ window.MEAL_DATA = {
     {
       id: 11,
       name: "Quinoa Salad with Veggie Maultaschen",
+      tag: "Maultaschen Salad",
       emoji: "🥗",
       hasTomato: false,
       inRotation: true,
@@ -311,8 +316,7 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Quinoa",                    quantity: "200g" },
           { name: "Corn (canned)",             quantity: "1 can" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ],
         "Refrigerated": [
           { name: "Vegetarian Maultaschen",    quantity: "1 pack (ready-made)" }
@@ -323,6 +327,7 @@ window.MEAL_DATA = {
     {
       id: 12,
       name: "Butter Chickpeas",
+      tag: "Butter Chickpeas",
       emoji: "🧡",
       hasTomato: true,
       inRotation: true,
@@ -349,6 +354,7 @@ window.MEAL_DATA = {
     {
       id: 13,
       name: "Krikikraki Salad",
+      tag: "Krikikraki",
       emoji: "🥙",
       hasTomato: true,
       inRotation: false,
@@ -365,8 +371,7 @@ window.MEAL_DATA = {
           { name: "Olives",                    quantity: "handful" },
           { name: "Corn (canned, optional)",   quantity: "1 can" },
           { name: "Greek herb mix",            quantity: "check stock" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ],
         "Dairy & Cheese": [
           { name: "Feta",                      quantity: "100–150g" }
@@ -377,6 +382,7 @@ window.MEAL_DATA = {
     {
       id: 14,
       name: "Creamy Mushroom Stroganoff",
+      tag: "Mushroom Stroganoff",
       emoji: "🍄",
       hasTomato: false,
       inRotation: false,
@@ -400,6 +406,7 @@ window.MEAL_DATA = {
     {
       id: 15,
       name: "Potato-Leek Soup",
+      tag: "Leek Soup",
       emoji: "🥔",
       hasTomato: false,
       inRotation: false,
@@ -410,8 +417,7 @@ window.MEAL_DATA = {
           { name: "Onions",                    quantity: "1" }
         ],
         "Pantry & Canned": [
-          { name: "Vegetable broth",           quantity: "1L" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Vegetable broth",           quantity: "1L" }
         ],
         "Dairy & Cheese": [
           { name: "Cream or oat cream",        quantity: "100ml" }
@@ -422,6 +428,7 @@ window.MEAL_DATA = {
     {
       id: 16,
       name: "Red Lentil Dahl",
+      tag: "Dahl",
       emoji: "🍛",
       hasTomato: false,
       inRotation: false,
@@ -439,7 +446,6 @@ window.MEAL_DATA = {
           { name: "Curry powder",              quantity: "1–2 tsp" },
           { name: "Cumin",                     quantity: "1 tsp" },
           { name: "Turmeric",                  quantity: "½ tsp" },
-          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Rice (to serve)",           quantity: "as needed" }
         ]
       }
@@ -448,6 +454,7 @@ window.MEAL_DATA = {
     {
       id: 17,
       name: "Homemade Veggie Burger + Oven Fries",
+      tag: "Burger",
       emoji: "🍔",
       hasTomato: true,
       inRotation: false,
@@ -469,8 +476,7 @@ window.MEAL_DATA = {
           { name: "Ketchup",                   quantity: "check stock" },
           { name: "Mustard",                   quantity: "check stock" },
           { name: "Mayonnaise",                quantity: "check stock" },
-          { name: "Olive oil",                 quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" }
+          { name: "Olive oil",                 quantity: "check stock" }
         ]
       }
     },
@@ -478,6 +484,7 @@ window.MEAL_DATA = {
     {
       id: 18,
       name: "Tomato & Hidden Veg Pasta Sauce",
+      tag: "Veg Pasta",
       emoji: "🫙",
       hasTomato: true,
       inRotation: false,
@@ -492,7 +499,6 @@ window.MEAL_DATA = {
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
           { name: "Olive oil",                 quantity: "2 tbsp" },
           { name: "Oregano",                   quantity: "check stock" },
-          { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta or gnocchi (to serve)", quantity: "as needed" }
         ]
       }
@@ -501,6 +507,7 @@ window.MEAL_DATA = {
     {
       id: 19,
       name: "Brokkolisuppe mit Kartoffeln",
+      tag: "Broccoli Soup",
       emoji: "🥦",
       hasTomato: false,
       isCheat: false,
@@ -518,7 +525,6 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Vegetable broth",quantity: "1L" },
           { name: "Butter",         quantity: "1 tsp" },
-          { name: "Salt and pepper",quantity: "check stock" },
           { name: "Nutmeg",         quantity: "check stock" }
         ]
       }
@@ -601,11 +607,11 @@ window.MEAL_DATA = {
         { name: "Cow's milk",                  quantity: "1L",          inList: true },
         { name: "Buttermilk",                  quantity: "1 bottle",    inList: true },
         { name: "Yogurt",                      quantity: "2–3 cups",    inList: true },
-        { name: "Bread",                       quantity: "1 loaf",      inList: true },
-        { name: "Butter",                      quantity: "check stock", inList: true },
+        { name: "Bread",                       quantity: "1 loaf",      inList: false },
+        { name: "Butter",                      quantity: "check stock", inList: false },
         { name: "Jam",                         quantity: "check stock", inList: true },
         { name: "Honey",                       quantity: "check stock", inList: true },
-        { name: "Nutella",                     quantity: "check stock", inList: true }
+        { name: "Nutella",                     quantity: "check stock", inList: false }
       ]
     },
 
@@ -614,9 +620,9 @@ window.MEAL_DATA = {
       emoji: "🍌",
       items: [
         { name: "Bananas",                     quantity: "6",           inList: true },
-        { name: "Apples",                      quantity: "4",           inList: true },
+        { name: "Apples",                      quantity: "4",           inList: false },
         { name: "Berries or grapes (seasonal)",quantity: "handful",     inList: true },
-        { name: "Yogurt / Quark",              quantity: "extra",       inList: true },
+        { name: "Flavored Yogurt",             quantity: "extra",       inList: true },
         { name: "Maiswaffeln plain",           quantity: "1 pack",      inList: true },
         { name: "Maiswaffeln chocolate",       quantity: "1 pack",      inList: true },
         { name: "Lentil crisps",               quantity: "1 pack",      inList: true },
@@ -628,10 +634,10 @@ window.MEAL_DATA = {
       category: "Drinks (3 days)",
       emoji: "🥤",
       items: [
-        { name: "Oat milk",                    quantity: "1 carton",    inList: true },
+        { name: "Oat milk",                    quantity: "1 carton",    inList: false},
         { name: "Coffee",                      quantity: "check stock", inList: true },
         { name: "Tea",                         quantity: "check stock", inList: true },
-        { name: "Juice (OJ or apple)",         quantity: "1 carton",    inList: true },
+        { name: "Smoothie",                    quantity: "1 carton",    inList: true },
         { name: "Non-alcoholic beer",          quantity: "6-pack",      inList: true },
         { name: "CO2 cylinder refill",         quantity: "check",       inList: true }
       ]

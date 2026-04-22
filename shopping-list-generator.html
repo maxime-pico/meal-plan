@@ -153,6 +153,8 @@
 
         .item:hover { background: var(--light-green); }
 
+        .item-sources { font-size: 0.78rem; color: #aaa; font-style: italic; }
+
         .item input[type="checkbox"] {
             width: 20px;
             height: 20px;
@@ -525,8 +527,9 @@
                         const key = item.name.toLowerCase();
                         if (seen[key]) {
                             seen[key].count++;
+                            const tag = recipe.tag || recipe.name; if (!seen[key].sources.includes(tag)) seen[key].sources.push(tag);
                         } else {
-                            const entry = { name: item.name, quantity: item.quantity, count: 1 };
+                            const entry = { name: item.name, quantity: item.quantity, count: 1, sources: [recipe.tag || recipe.name] };
                             seen[key] = entry;
                             consolidated[cat].push(entry);
                         }
@@ -709,7 +712,7 @@
                                 <div class="item">
                                     <input type="checkbox" id="item-${cat}-${idx}" data-item="${cat}-${idx}" ${isItemPreChecked(cat, item) ? 'checked' : ''}>
                                     <label for="item-${cat}-${idx}">
-                                        ${item.name}${item.quantity ? ` • ${item.quantity}` : ''}
+                                        ${item.name}${item.quantity ? ` • ${item.quantity}` : ''}${item.sources && item.sources.length ? ` <span class="item-sources">${item.sources.join(', ')}</span>` : ''}
                                     </label>
                                 </div>
                             `).join('')}
