@@ -269,51 +269,12 @@
             gap: 0.5rem;
         }
 
-        .copy-btn { background: var(--warm-orange); color: white; }
-        .copy-btn:hover { background: #c39464; }
-        .print-btn { background: var(--soft-green); color: white; }
-        .print-btn:hover { background: #1f3d0d; }
-        .qr-btn { background: #4a7fc1; color: white; }
-        .qr-btn:hover { background: #3a6aa8; }
+        .copy-btn { background: var(--soft-green); color: white; }
+        .copy-btn:hover { background: #1f3d0d; }
+        .print-btn { background: var(--warm-orange); color: white; }
+        .print-btn:hover { background: #c39464; }
         .reset-btn { background: #aaa; color: white; }
         .reset-btn:hover { background: #888; }
-
-        .qr-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.55);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        .qr-modal.open { display: flex; }
-
-        .qr-modal-box {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            max-width: 340px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .qr-modal-box h3 { color: var(--soft-green); margin-bottom: 0.5rem; font-size: 1.1rem; }
-        .qr-modal-box p { font-size: 0.85rem; color: #666; margin-bottom: 1.25rem; }
-        #qrImg { width: 260px; height: 260px; }
-        .qr-warn { font-size: 0.8rem; color: #b8860b; margin-top: 0.75rem; display: none; }
-        .qr-close-btn {
-            margin-top: 1.25rem;
-            padding: 0.6rem 1.5rem;
-            background: var(--soft-green);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        .qr-close-btn:hover { background: #1f3d0d; }
 
         .copy-feedback {
             padding: 0.75rem;
@@ -389,22 +350,10 @@
                     <a href="https://www.getbring.com">Bring! Shopping List</a>
                 </div>
             </div>
-            <button class="action-btn qr-btn" id="qrBtn">📱 QR Code</button>
             <button class="action-btn print-btn" id="printBtn">🖨️ Print List</button>
             <button class="action-btn reset-btn" id="resetBtn">↺ Reset List</button>
         </div>
     </div>
-
-    <div class="qr-modal" id="qrModal">
-        <div class="qr-modal-box">
-            <h3>📱 Open on your phone</h3>
-            <p>Scan to open the shopping list — your phone and computer must be on the same WiFi.</p>
-            <img id="qrImg" style="display:block;margin:0 auto;" />
-            <div class="qr-warn" id="qrWarn"></div>
-            <button class="qr-close-btn" id="qrCloseBtn">Close</button>
-        </div>
-    </div>
-
 
     <script>
         // -----------------------------------------------------------------------
@@ -619,14 +568,7 @@
             });
             document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
             document.getElementById('printBtn').addEventListener('click', () => window.print());
-            document.getElementById('qrBtn').addEventListener('click', showQrCode);
             document.getElementById('resetBtn').addEventListener('click', resetCurrentTrip);
-            document.getElementById('qrCloseBtn').addEventListener('click', () => {
-                document.getElementById('qrModal').classList.remove('open');
-            });
-            document.getElementById('qrModal').addEventListener('click', e => {
-                if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-            });
         }
 
         function resetCurrentTrip() {
@@ -1006,22 +948,6 @@
                 uncheckedCustom.forEach(i => { text += `- ${i.name}\n`; });
             }
             return text;
-        }
-
-        async function showQrCode() {
-            const warn = document.getElementById('qrWarn');
-            const img = document.getElementById('qrImg');
-            warn.style.display = 'none';
-            img.src = '';
-            document.getElementById('qrModal').classList.add('open');
-            let ip = '192.168.2.33';
-            try {
-                const res = await fetch('/lan-ip');
-                const data = await res.json();
-                if (data.ip) ip = data.ip;
-            } catch (e) {}
-            const url = `http://${ip}:4321/shopping-list-generator.html`;
-            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(url)}`;
         }
 
         loadCalendarState();

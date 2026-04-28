@@ -49,8 +49,11 @@ window.MEAL_DATA = {
         "Dairy & Cheese": [
           { name: "Butter",                    quantity: "check stock" },
           { name: "Parmesan",                  quantity: "check stock" },
-          { name: "Pecorino",                  quantity: "check stock" }
-        ]
+          { name: "Pecorino",                  quantity: "check stock" },
+          ],
+         "Beverages": [
+          { name: "White Wine",                quantity: "10mL" }
+         ]
       }
     },
 
@@ -124,6 +127,7 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Kidney beans (canned)",     quantity: "1 can" },
           { name: "Smoked tofu",               quantity: "200g" },
+          { name: "Corn",                      quantity: "50g" },
           { name: "Canned chopped tomatoes",   quantity: "2 cans" },
           { name: "Olive oil",                 quantity: "check stock" },
           { name: "Cumin",                     quantity: "check stock" },
@@ -155,7 +159,10 @@ window.MEAL_DATA = {
         ],
         "Pantry & Canned": [
           { name: "Black pepper",              quantity: "generously" }
-        ]
+        ],
+        "Beverages": [
+          { name: "White Wine",                quantity: "10mL" }
+         ]
       }
     },
 
@@ -259,7 +266,10 @@ window.MEAL_DATA = {
         ],
         "Dairy & Cheese": [
           { name: "Parmesan (optional)",       quantity: "check stock" }
-        ]
+        ],
+        "Beverages": [
+          { name: "White Wine (optional)",                quantity: "10mL" }
+         ]
       }
     },
 
@@ -392,7 +402,7 @@ window.MEAL_DATA = {
           { name: "Onions",                    quantity: "1" }
         ],
         "Pantry & Canned": [
-          { name: "Mustard",                   quantity: "1 tbsp" },
+          { name: "Mustard",                   quantity: "check stock" },
           { name: "Oil",                       quantity: "check stock" },
           { name: "Salt and pepper",           quantity: "check stock" },
           { name: "Pasta or rice (to serve)",  quantity: "as needed" }
@@ -491,7 +501,8 @@ window.MEAL_DATA = {
       ingredients: {
         "Fresh Produce": [
           { name: "Zucchini",                  quantity: "1" },
-          { name: "Carrots",                   quantity: "1" },
+          { name: "Aubergine",                 quantity: "1" },
+          { name: "Red Bell Pepper",           quantity: "1" },
           { name: "Onions",                    quantity: "1" },
           { name: "Garlic cloves",             quantity: "2" }
         ],
@@ -500,6 +511,9 @@ window.MEAL_DATA = {
           { name: "Olive oil",                 quantity: "2 tbsp" },
           { name: "Oregano",                   quantity: "check stock" },
           { name: "Pasta or gnocchi (to serve)", quantity: "as needed" }
+        ],
+        "Dairy & Cheese": [
+          { name: "Riccotta",          quantity: "1 ball" },
         ]
       }
     },
