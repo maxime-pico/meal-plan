@@ -724,157 +724,16 @@
             });
         }
 
-        // Maps lowercase item names → Bring! catalog itemId + sectionId (German).
-        // Items not in this map are sent as custom text with no altSection.
-        const BRING_ITEM_MAP = {
-            // Früchte & Gemüse
-            "onions":                       { itemId: "Zwiebeln",       altSection: "Früchte & Gemüse" },
-            "onion":                        { itemId: "Zwiebeln",       altSection: "Früchte & Gemüse" },
-            "red onions":                   { itemId: "Zwiebeln",       altSection: "Früchte & Gemüse" },
-            "fresh mushrooms":              { itemId: "Pilze",          altSection: "Früchte & Gemüse" },
-            "mushrooms":                    { itemId: "Pilze",          altSection: "Früchte & Gemüse" },
-            "dried porcini mushrooms":      { itemId: "Pilze",          altSection: "Früchte & Gemüse" },
-            "fresh or frozen parsley":      { itemId: "Petersilie",     altSection: "Früchte & Gemüse" },
-            "fresh parsley":                { itemId: "Petersilie",     altSection: "Früchte & Gemüse" },
-            "red bell peppers":             { itemId: "Peperoni",       altSection: "Früchte & Gemüse" },
-            "bell peppers":                 { itemId: "Peperoni",       altSection: "Früchte & Gemüse" },
-            "garlic cloves":                { itemId: "Knoblauch",      altSection: "Früchte & Gemüse" },
-            "garlic clove":                 { itemId: "Knoblauch",      altSection: "Früchte & Gemüse" },
-            "asparagus":                    { itemId: "Spargel",        altSection: "Früchte & Gemüse" },
-            "fresh mint":                   { itemId: "Pfefferminze",   altSection: "Früchte & Gemüse" },
-            "lemons":                       { itemId: "Zitrone",        altSection: "Früchte & Gemüse" },
-            "carrots":                      { itemId: "Karotten",       altSection: "Früchte & Gemüse" },
-            "cherry tomatoes":              { itemId: "Cherrytomaten",  altSection: "Früchte & Gemüse" },
-            "fresh basil":                  { itemId: "Basilikum",      altSection: "Früchte & Gemüse" },
-            "zucchini":                     { itemId: "Zucchetti",      altSection: "Früchte & Gemüse" },
-            "leeks":                        { itemId: "Lauch",          altSection: "Früchte & Gemüse" },
-            "spinach (fresh or frozen)":    { itemId: "Spinat",         altSection: "Früchte & Gemüse" },
-            "salad leaves":                 { itemId: "Salat",          altSection: "Früchte & Gemüse" },
-            "cucumbers":                    { itemId: "Gurke",          altSection: "Früchte & Gemüse" },
-            "avocados":                     { itemId: "Avocado",        altSection: "Früchte & Gemüse" },
-            "tomatoes":                     { itemId: "Tomaten",        altSection: "Früchte & Gemüse" },
-            "tomatoes (for salad)":         { itemId: "Tomaten",        altSection: "Früchte & Gemüse" },
-            "potatoes":                     { itemId: "Kartoffeln",     altSection: "Früchte & Gemüse" },
-            "fresh ginger":                 { itemId: "Ingwer",         altSection: "Früchte & Gemüse" },
-            "celery sticks":                { itemId: "Sellerie",       altSection: "Früchte & Gemüse" },
-            "broccoli":                     { itemId: "Brokkoli",       altSection: "Früchte & Gemüse" },
-            "bananas":                      { itemId: "Bananen",        altSection: "Früchte & Gemüse" },
-            "apples":                       { itemId: "Äpfel",          altSection: "Früchte & Gemüse" },
-            "berries or grapes (seasonal)": { itemId: "Beeren",         altSection: "Früchte & Gemüse" },
-            "olives":                       { itemId: "Oliven",         altSection: "Früchte & Gemüse" },
-            "peas (fresh or frozen)":       { itemId: "Erbsen",         altSection: "Früchte & Gemüse" },
-            "corn (canned)":                { itemId: "Mais",           altSection: "Früchte & Gemüse" },
-            "corn (canned, optional)":      { itemId: "Mais",           altSection: "Früchte & Gemüse" },
-            // Milch & Käse
-            "butter":                       { itemId: "Butter",         altSection: "Milch & Käse" },
-            "salty butter":                 { itemId: "Butter",         altSection: "Milch & Käse" },
-            "parmesan":                     { itemId: "Parmesan",       altSection: "Milch & Käse" },
-            "parmesan (optional)":          { itemId: "Parmesan",       altSection: "Milch & Käse" },
-            "pecorino":                     { itemId: "Käse",           altSection: "Milch & Käse" },
-            "pecorino romano":              { itemId: "Käse",           altSection: "Milch & Käse" },
-            "feta":                         { itemId: "Feta",           altSection: "Milch & Käse" },
-            "eggs":                         { itemId: "Eier",           altSection: "Milch & Käse" },
-            "eggs (for lunches)":           { itemId: "Eier",           altSection: "Milch & Käse" },
-            "fresh mozzarella":             { itemId: "Mozzarella",     altSection: "Milch & Käse" },
-            "grated mozzarella":            { itemId: "Reibkäse",       altSection: "Milch & Käse" },
-            "ricotta or crème fraîche":     { itemId: "Ricotta",        altSection: "Milch & Käse" },
-            "crème fraîche":                { itemId: "Creme fraiche",  altSection: "Milch & Käse" },
-            "cream":                        { itemId: "Rahm",           altSection: "Milch & Käse" },
-            "cream or oat cream":           { itemId: "Rahm",           altSection: "Milch & Käse" },
-            "cream or coconut milk":        { itemId: "Rahm",           altSection: "Milch & Käse" },
-            "cheese slices":                { itemId: "Käse",           altSection: "Milch & Käse" },
-            "buko frischkäse":              { itemId: "Frischkäse",     altSection: "Milch & Käse" },
-            "cow's milk":                   { itemId: "Milch",          altSection: "Milch & Käse" },
-            "buttermilk":                   { itemId: "Milch",          altSection: "Milch & Käse" },
-            "yogurt":                       { itemId: "Joghurt",        altSection: "Milch & Käse" },
-            "yogurt / quark":               { itemId: "Joghurt",        altSection: "Milch & Käse" },
-            // Fleisch & Fisch
-            "guanciale or pancetta":        { itemId: "Speck",          altSection: "Fleisch & Fisch" },
-            // Getreideprodukte
-            "risotto rice":                 { itemId: "Risottoreis",    altSection: "Getreideprodukte" },
-            "spaghetti":                    { itemId: "Spaghetti",      altSection: "Getreideprodukte" },
-            "pasta":                        { itemId: "Nudeln",         altSection: "Getreideprodukte" },
-            "orzo / risoni pasta":          { itemId: "Nudeln",         altSection: "Getreideprodukte" },
-            "risoni (kritharaki)":          { itemId: "Nudeln",         altSection: "Getreideprodukte" },
-            "rice":                         { itemId: "Reis",           altSection: "Getreideprodukte" },
-            "quinoa":                       { itemId: "Reis",           altSection: "Getreideprodukte" },
-            "chickpeas (canned)":           { itemId: "Kichererbsen",   altSection: "Getreideprodukte" },
-            "smoked tofu":                  { itemId: "Tofu",           altSection: "Getreideprodukte" },
-            "müsli / granola":              { itemId: "Müesli",         altSection: "Getreideprodukte" },
-            // Brot & Gebäck
-            "toast bread":                  { itemId: "Toast",          altSection: "Brot & Gebäck" },
-            "bread":                        { itemId: "Brot",           altSection: "Brot & Gebäck" },
-            "burger buns":                  { itemId: "Brötchen",       altSection: "Brot & Gebäck" },
-            // Fertig- & Tiefkühlprodukte
-            "lasagna sheets":               { itemId: "Lasagne",        altSection: "Fertig- & Tiefkühlprodukte" },
-            "vegetarian maultaschen":       { itemId: "Knödel",         altSection: "Fertig- & Tiefkühlprodukte" },
-            "veggie patties (ready-made)":  { itemId: "TV-Dinner",      altSection: "Fertig- & Tiefkühlprodukte" },
-            // Zutaten & Gewürze
-            "vegetable broth":              { itemId: "Bouillon",       altSection: "Zutaten & Gewürze" },
-            "vegetable broth cube":         { itemId: "Bouillon",       altSection: "Zutaten & Gewürze" },
-            "olive oil":                    { itemId: "Olivenöl",       altSection: "Zutaten & Gewürze" },
-            "oil":                          { itemId: "Öl",             altSection: "Zutaten & Gewürze" },
-            "salt and pepper":              { itemId: "Salz",           altSection: "Zutaten & Gewürze" },
-            "salt":                         { itemId: "Salz",           altSection: "Zutaten & Gewürze" },
-            "black pepper":                 { itemId: "Pfeffer",        altSection: "Zutaten & Gewürze" },
-            "canned peeled tomatoes":       { itemId: "Pelati",         altSection: "Zutaten & Gewürze" },
-            "canned chopped tomatoes":      { itemId: "Pelati",         altSection: "Zutaten & Gewürze" },
-            "canned tomatoes":              { itemId: "Pelati",         altSection: "Zutaten & Gewürze" },
-            "passata":                      { itemId: "Tomatensauce",   altSection: "Zutaten & Gewürze" },
-            "tomato paste":                 { itemId: "Tomatenmark",    altSection: "Zutaten & Gewürze" },
-            "coconut milk (canned)":        { itemId: "Kokosmilch",     altSection: "Zutaten & Gewürze" },
-            "red lentils":                  { itemId: "Linsen",         altSection: "Zutaten & Gewürze" },
-            "kidney beans (canned)":        { itemId: "Bohnen",         altSection: "Zutaten & Gewürze" },
-            "black beans (canned)":         { itemId: "Bohnen",         altSection: "Zutaten & Gewürze" },
-            "pine nuts (optional)":         { itemId: "Pinienkerne",    altSection: "Zutaten & Gewürze" },
-            "mustard":                      { itemId: "Senf",           altSection: "Zutaten & Gewürze" },
-            "ketchup":                      { itemId: "Ketchup",        altSection: "Zutaten & Gewürze" },
-            "mayonnaise":                   { itemId: "Mayonnaise",     altSection: "Zutaten & Gewürze" },
-            "paprika":                      { itemId: "Paprikapulver",  altSection: "Zutaten & Gewürze" },
-            "cumin":                        { itemId: "Cumin",          altSection: "Zutaten & Gewürze" },
-            "cayenne pepper":               { itemId: "Cayenne pepper", altSection: "Zutaten & Gewürze" },
-            "chili powder":                 { itemId: "Chili powder",   altSection: "Zutaten & Gewürze" },
-            "curry paste or powder":        { itemId: "Curry paste",    altSection: "Zutaten & Gewürze" },
-            "curry powder":                 { itemId: "Curry powder",   altSection: "Zutaten & Gewürze" },
-            "garam masala / curry":         { itemId: "Garam masala",   altSection: "Zutaten & Gewürze" },
-            "turmeric":                     { itemId: "Turmeric",       altSection: "Zutaten & Gewürze" },
-            "nutmeg":                       { itemId: "Nutmeg",         altSection: "Zutaten & Gewürze" },
-            "oregano":                      { itemId: "Oregano",        altSection: "Zutaten & Gewürze" },
-            "italian herbs (dried)":        { itemId: "Oregano",        altSection: "Zutaten & Gewürze" },
-            "italian herbs":                { itemId: "Oregano",        altSection: "Zutaten & Gewürze" },
-            "greek herb mix":               { itemId: "Oregano",        altSection: "Zutaten & Gewürze" },
-            "white wine (optional)":        { itemId: "Weisswein",      altSection: "Getränke & Tabak" },
-            // Snacks & Süsswaren
-            "honey":                        { itemId: "Honig",          altSection: "Snacks & Süsswaren" },
-            "jam":                          { itemId: "Konfitüre",      altSection: "Snacks & Süsswaren" },
-            "nutella":                      { itemId: "Nougatcreme",    altSection: "Snacks & Süsswaren" },
-            "chocolate bar":                { itemId: "Schokolade",     altSection: "Snacks & Süsswaren" },
-            "lentil crisps":                { itemId: "Snacks",         altSection: "Snacks & Süsswaren" },
-            "maiswaffeln plain":            { itemId: "Snacks",         altSection: "Snacks & Süsswaren" },
-            "maiswaffeln chocolate":        { itemId: "Schokolade",     altSection: "Snacks & Süsswaren" },
-            // Getränke & Tabak
-            "oat milk":                     { itemId: "Soya Milch",     altSection: "Getränke & Tabak" },
-            "coffee":                       { itemId: "Kaffee",         altSection: "Getränke & Tabak" },
-            "tea":                          { itemId: "Tee",            altSection: "Getränke & Tabak" },
-            "juice (oj or apple)":          { itemId: "Orangensaft",    altSection: "Getränke & Tabak" },
-            "non-alcoholic beer":           { itemId: "Bier",           altSection: "Getränke & Tabak" },
-            // Haushalt & Gesundheit
-            "dish soap":                    { itemId: "Abwaschmittel",  altSection: "Haushalt & Gesundheit" },
-            "laundry detergent":            { itemId: "Waschmittel",    altSection: "Haushalt & Gesundheit" },
-            "sponges":                      { itemId: "Schwamm",        altSection: "Haushalt & Gesundheit" },
-            "trash bags":                   { itemId: "Abfallsäcke",    altSection: "Haushalt & Gesundheit" },
-            // Pflege & Gesundheit
-            "diapers":                      { itemId: "Windeln",        altSection: "Pflege & Gesundheit" },
-            "baby wipes":                   { itemId: "Feuchttücher",   altSection: "Pflege & Gesundheit" },
-            "baby cream":                   { itemId: "Baby cream",     altSection: "Pflege & Gesundheit" },
-            "shampoo":                      { itemId: "Shampoo",        altSection: "Pflege & Gesundheit" },
-            "soap / shower gel":            { itemId: "Seife",          altSection: "Pflege & Gesundheit" },
-            "toothpaste":                   { itemId: "Zahnpasta",      altSection: "Pflege & Gesundheit" },
-        };
+        const BRING_ITEM_MAP = MEAL_DATA.bringItemMap;
 
         function lookupBringItem(name) {
             const mapped = BRING_ITEM_MAP[name.toLowerCase()];
-            if (mapped) return { itemId: mapped.itemId, altSection: mapped.altSection };
+            if (mapped) {
+                const item = { itemId: mapped.itemId };
+                if (mapped.altSection) item.altSection = mapped.altSection;
+                if (mapped.specification) item.specification = mapped.specification;
+                return item;
+            }
             return { itemId: name };
         }
 
