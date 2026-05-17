@@ -429,6 +429,9 @@ window.MEAL_DATA = {
         "Pantry & Canned": [
           { name: "Vegetable broth",           quantity: "1L" }
         ],
+        "Bread & Grains": [
+          { name: "Flatbread",                 quantity: "1" }
+        ],
         "Dairy & Cheese": [
           { name: "Cream or oat cream",        quantity: "100ml" }
         ]
@@ -537,6 +540,9 @@ window.MEAL_DATA = {
         ],
         "Refrigerated": [
           { name: "Cream",          quantity: "50ml" }
+        ],
+        "Bread & Grains": [
+          { name: "Flatbread",      quantity: "1" }
         ],
         "Pantry & Canned": [
           { name: "Vegetable broth",quantity: "1L" },
@@ -798,6 +804,7 @@ window.MEAL_DATA = {
     "müsli / granola":              { itemId: "Müesli",         altSection: "Getreideprodukte" },
     // Brot & Gebäck
     "toast bread":                  { itemId: "Toast",          altSection: "Brot & Gebäck" },
+    "flatbread":                    { itemId: "Fladenbrot",     altSection: "Brot & Gebäck" },
     "bread":                        { itemId: "Brot",           altSection: "Brot & Gebäck" },
     "burger buns":                  { itemId: "Brötchen",       altSection: "Brot & Gebäck" },
     // Fertig- & Tiefkühlprodukte
